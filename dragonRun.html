@@ -1,0 +1,293 @@
+<head>
+  <title>HIS Dragon Run Registration</title>
+</head>
+
+    
+  
+  
+ 
+
+
+<template name = "mainContent">
+<div class = "headerBar">
+    
+<h1 class = "centerText HISGold" id = "header"> 2014 HIS Dragon Run & Fun Run Registration</h1> 
+
+    
+</div>
+    {{> yield}}
+
+</template>
+
+<template name = "selectRace">
+<p class =" HISBlue centerText"><i >Please use only Safari or Firefox to register. Chrome is not functioning correctly at the moment.</i></p>
+
+<p class = "centerText" id = "selectRaceParagraph">
+    <h1 class = "centerText">I am registering a runner for the (select one):<span id = "select5KRun" class = "raceSelect">5K Dragon Run</span> <span id = "selectFunRun" class = "raceSelect">1K Fun Run</span></h1></p>
+
+</template>
+
+<template name="registrationForm">
+<div id = "registrationFormBackground"></div>
+    
+    {{>selectRace}}
+
+{{#if raceSelected}}
+<div id = "registrationFormContent">
+
+    
+<div id = "rightColumn">
+    
+<h2 class = "HISBlue centerText">HIS International School <br> Annual Community {{raceName}}</h2>
+<h2 class = "HISBlue centerText">Saturday, May 17, 2014</h2>
+<h3 class = "centerText">To receive a t-shirt, registration and payment must be received before <span class = "HISBlue">Friday, May 2nd.</span></h3>
+
+If you would like to make an additional donation to the Carnations School, please enter the amount below:
+    
+    <div class = "formElement"><input type ="number" class = "textInput" name = "runnerAdditionalDonation" placeholder = "Donation Amount" id = "additionalDonation" value = "0" min = "0"> RMB</div>
+    {{#if ageGroupSelected}}
+    
+    <h2 class = "feeTotals">Registration Fee: {{registrationFee}} RMB</h2>
+    <h2 class = "HISBlue feeTotals">Total Payment Due: {{registrationTotal}} RMB</h2>
+    
+    <input type = "checkbox" id = "registrationMustPayToComplete"> I understand that I must make a payment of the above amount to the HIS office before my registration is complete.
+    
+    {{/if}}
+    
+    
+    
+</div>
+        
+    
+    
+ 
+ <div id = "leftColumn">
+  
+  <div class = "formElement"> <input type = "text" class = "textInput" name = "runnerGivenName" placeholder = "Given Name" title = "Given Name">    </div>
+ <div class = "formElement"> <input type = "text" class = "textInput" name = "runnerFamilyName" placeholder = "Family Name" title = "Family Name">    </div>
+
+<div class = "formElement">  
+    
+<select class = "textInput" name = "runnerAge" id = "runnerAge" title = "Age group" >
+<option value = "">Enter your age group:</option>
+<option value = "1">Lower School (Grades K - 5) </option>
+<option value = "2">Middle School (Grades 6 - 8) </option>
+<option value = "3">High School (Grades 9 - 12)</option>
+<option value = "4">Adult</option>
+    
+</select>    
+    
+    
+</div>
+<div class = "formElement">  
+    
+<select class = "textInput" name = "runnerGender" title = "Gender">
+<option value = "">Enter your gender:</option>
+<option value = "M">Male </option>
+<option value = "F">Female </option>
+    
+</select>    
+    
+    
+</div>
+<div class = "formElement">  <input type = "phone" class = "textInput" name = "runnerPhone" placeholder = "Contact Phone Number" title = "Contact Phone #">   
+</div>
+ <div class = "formElement">  <input type = "text" class = "textInput" name = "runnerEmail" placeholder = "Contact Email Address" title = "Contact Email">   
+</div>
+
+
+ <div class = "formElement">  <input type = "text" class = "textInput" name = "runnerEmergencyName" placeholder = "Name of Emergency Contact on Race Day" title = "Name of Emergency Contact">   
+</div>
+ <div class = "formElement">  <input type = "phone" class = "textInput" name = "runnerEmergencyPhone" placeholder = "Phone Number of Emergency Contact" title = "Phone number of Emergency Contact">   
+</div>
+
+{{#unless funRunSelected}}
+<div class = "formElement">  
+    
+<select class = "textInput" name = "runnerEstimatedTime" title = "Estimated race time">
+<option value = "">Select your estimated finish time:</option>
+<option value = "1">Under 20 Minutes </option>
+<option value = "2">20 - 25 Minutes </option>
+<option value = "3">25 - 30 Minutes </option>
+<option value = "4">Over 30 Minutes </option>
+</select>    
+    
+    
+</div>     
+{{/unless}}
+     
+<div class = "formElement">  
+    
+<select class = "textInput" name = "runnerShirtSize">
+<option value = "">Select your t-shirt size:</option>
+<option value = "110">110 </option>
+<option value = "120">120 </option>
+<option value = "130">130</option>
+<option value = "XS">Extra Small (XS)</option>
+<option value = "S">Small (S)</option>
+<option value = "M">Medium (M)</option>
+<option value = "L">Large (L)</option>
+<option value = "XL">Extra Large (XL)</option>
+<option value = "XXL">Extra Extra Large</option>
+</select>    
+
+    
+</div>   
+    
+
+</div>
+
+{{#if showSubmitButton}}
+    
+    <p class = "centerText">
+    <button id = "submitRegistration">Submit Registration</button>    
+    </p>
+{{/if}}
+    
+</div>
+{{/if}}   
+  
+
+
+</template>
+
+<template name = "registrationNotReady">
+<div id = "notReadyYet">
+
+<h1 class = "HISGold centerText">Registration is not yet open. Check back soon!</h1>
+    
+</div>
+
+
+</template>
+
+<template name = "confirmationPage">
+
+    <div id = "confirmationPageContent">
+        {{#if registrationComplete}}
+    <a href = "/"><span id = "registerAnother">Register Another Runner!</span></a>
+      {{/if}}
+        <span id = "registrationCodeConfirmation"><span style = "font-size:20px">Registration Code:</span> {{runnerRegistrationCode}}</span>
+        <h2 id = "registrationNotComplete">YOUR REGISTRATION IS NOT YET COMPLETE!</h2>
+        
+        
+        <h3>Here is what you need to do:</h3>
+        <h4>
+        <ol>
+        <li>Print this page. You may also want to save a copy for your records or bookmark this page for reference.</li>
+        <li>Sign the disclaimer at the bottom of the page. If you are under 16, please have a parent or guardian sign for you.</li>
+        <li>Bring this printed page to the HIS Front Desk with your payment. They will process the payment and finalize your registration.</li>
+        </ol></h4>
+        
+        <span id = "runnerNameConfirmation">{{runnerFirstName}} {{runnerLastName}} is registering for the <u>{{runnerRaceSelected}}</u> on Saturday, May 17th, 2014.</span>
+        <div id = "confirmFloatLeft">
+        <h5>
+        <table>
+        
+        
+        <tr><td>Contact Email Address:</td><td>{{runnerEmail}}</td></tr>
+        <tr><td>Phone:</td><td>{{runnerPhone}}</td></tr>
+        <tr><td>Age Group:</td><td>{{ageGroup}}</td></tr>
+        <tr><td>Gender</td><td>{{runnerGender}}</td></tr>
+        <tr><td>Emergency Contact:</td><td>{{runnerEmergencyName}}</td></tr>
+        <tr><td>Emergency Phone # of Contact:</td><td>{{runnerEmergencyPhone}}</td></tr>
+            {{#unless isFunRun}}
+        <tr><td>Estimated Finish Time:</td><td>{{runnerEstimatedFinishTime}}</td></tr>
+            {{/unless}}
+        <tr><td>Shirt Size:</td><td>{{runnerShirtSize}}</td></tr>
+        
+        
+        
+        </table>
+        </h5>
+        </div>
+        <div id = "confirmFloatRight">
+        <h3>
+        
+        Registration Fee:{{runnerRegistrationFee}} RMB <br>
+        Additional Donation:{{runnerAdditionalDonation}} RMB<br>
+        
+        <h2>Please pay {{runnerTotalFee}} RMB to the front office.</h2>
+        
+     
+        </h3>
+        
+        </div>
+    <div id = "confirmationDisclaimer">
+    Race disclaimer: I wish to enter the 7th Annual HIS 5K Dragon Run/1K Fun Run. I am medically fit to run or walk the distance involved and will not hold the organizers or sponsors responsible for any injury or loss to my property or person, however caused, before, during, or after the event. Children of 16 years and under may participate only with the consent of a parent/guardian. I understand that the course is open to all traffic.
+        <p></p>
+Participant Signature: _______________________________________________ (or Parent/guardian signature for students 16 and under)
+    </div>
+    
+    
+    </div>
+
+
+</template>
+
+<template name = "registrationList">
+<div id = "registrationList">
+    Not Paid:
+    <table>
+    {{#each notPaidRunners}}
+    <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Paid:
+    <table>
+    {{#each paidRunners}}
+     <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+    
+
+</template>
+
+<template name = "paymentConfirmationFrontPage">
+<div class = "paymentConfirmationContainer">
+    <p class = "centerText">
+    <input type = "password" id = "paymentPassword" class = "textInput paymentTextInputs" >
+    </p>
+    
+    
+     <p class = "centerText">
+    
+    <input type = "text" placeholder = "e.g. '4Pyj'" id = "paymentRegistrationCode" class = "textInput paymentTextInputs">
+         <button id = "submitRegistrationCode">Retrieve Registration Information</button>
+    </p>
+     
+    {{#each retrievedRecords}}
+    <a href = "/paymentConfirmation/{{_id}}">{{runnerFirstName}} {{runnerLastName}}</a>
+    {{/each}}
+    
+</div>
+
+</template>
+<template name = "paymentConfirmationRunner">
+<div class = "paymentConfirmationContainer">
+<h3 class = "centerText" id = "paymentConfirmationName">{{runnerFirstName}} {{runnerLastName}}</h3>
+<table>
+        
+    
+        <tr><td>Contact Email Address:</td><td>{{runnerEmail}}</td></tr>
+        <tr><td>Total Registration Amount:</td><td>{{runnerTotalFee}} RMB</td></tr>
+        <tr><td>Registration Code:</td><td>{{runnerRegistrationCode}}</td></tr>
+      
+        
+</table>
+Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived" checked = {{isChecked}}>
+<h4><a href = "/HISDrag0nRuN2O14/paymentRegistrationConfirmation/">Back to payment page</a></h4>
+</div>
+
+
+
+</template>
+

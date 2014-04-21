@@ -226,8 +226,10 @@ Participant Signature: _______________________________________________ (or Paren
 </template>
 
 <template name = "registrationList">
+
 <div id = "registrationList">
-    Not Paid:
+    Total Registered: {{numberRegistered}} <p></p>
+    Not Paid ({{numberUnpaid}}):
     <table>
     {{#each notPaidRunners}}
     <tr><td>
@@ -237,7 +239,7 @@ Participant Signature: _______________________________________________ (or Paren
     
     {{/each}}
     </table>
-    Paid:
+    Paid ({{numberPaid}}):
     <table>
     {{#each paidRunners}}
      <tr><td>

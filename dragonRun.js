@@ -186,6 +186,15 @@ notPaidRunners: function(){
  return runnersList;   
 },
 
+numberPaid: function(){
+return Runners.find({runnerHasPaid:'true'},{sort:{runnerLastName:-1}}).count();
+    
+},
+    
+numberUnpaid: function(){
+    
+return Runners.find({runnerHasPaid:'false'},{sort:{runnerLastName:-1}}).count();        
+}
 });
    
 Template.selectRace.events({

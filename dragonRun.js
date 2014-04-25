@@ -142,7 +142,22 @@ Template.registrationForm.events({
        
         var registrationObject = getRegistrationInfo();     
         console.log(registrationObject);
-        Runners.insert(registrationObject);
+        Runners.insert(registrationObject,function(error,result){
+        $('#submitRegistration').html('Submitting....');
+            
+        if(error==undefined){
+            
+           Session.set('currentRegistrationCode',registrationObject.runnerRegistrationCode);
+        var id = Runners.findOne({runnerRegistrationCode:registrationObject.runnerRegistrationCode})
+        Router.go('/registrationConfirmation/'+result+'/'+registrationObject.runnerRegistrationCode+'/');
+        Session.set("registrationComplete",'true');    
+        sendConfirmationEmail(registrationObject.runnerFirstName + ' ' + registrationObject.runnerLastName, registrationObject.runnerEmail, registrationObject.runnerRegistrationCode,result); 
+            
+        }    
+        });
+        
+       
+          
         for(i=0;i<textInputs.length;i++){
             
         $(textInputs[i]).val('');
@@ -150,11 +165,8 @@ Template.registrationForm.events({
             
             
         }
-        Session.set('currentRegistrationCode',registrationObject.runnerRegistrationCode);
-        var id = Runners.findOne({runnerRegistrationCode:registrationObject.runnerRegistrationCode})
-        Router.go('/registrationConfirmation/'+id+'/'+registrationObject.runnerRegistrationCode+'/');
-        Session.set("registrationComplete",'true');
-            
+        $('#submitRegistration').html('Submit Registration');
+        
         }
           
     },
@@ -299,7 +311,7 @@ Template.confirmationPage.events({
     
     'click #registerAnother': function(){
         
-     Session.set("selectedRace","-1");
+     Session.set("selectedRace","");
         
     }
     
@@ -396,6 +408,7 @@ Template.unpaidRunnerEmailList.helpers({
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
+    process.env.MAIL_URL = 'smtp://weinbergmath:tjhyazksulwununr@smtp.gmail.com:587';
   });
 
     
@@ -404,6 +417,22 @@ Meteor.publish('runners', function(options) {
     
     return Runners.find({},options);
     
+});
+Meteor.methods({
+  sendEmail: function (to, from, subject, text) {
+    check([to, from, subject, text], [String]);
+
+    // Let other method calls from the same client start running,
+    // without waiting for the email sending to complete.
+    this.unblock();
+
+    Email.send({
+      to: to,
+      from: from,
+      subject: subject,
+      text: text
+    });
+  }
 });
 }
 
@@ -459,5 +488,21 @@ c = characters[Math.floor(characters.length*Math.random())];
 d = Math.floor(10*Math.random()).toString();
 
 return a+b+c+d;
+    
+}
+
+var sendConfirmationEmail = function(name, email, registrationCode, id){
+ 
+var emailString = "Dear " + name +",\n Thank you for submitting your information through the Dragon Run/ Fun Run website. \n\n Your registration is not complete. You must print out your form and bring it in to the HIS office, along with your registration fee. \n\n You can access the link to your form at: \n http://dragonrun.meteor.com/"+id+"/"+registrationCode+"/  \n\n Please email eweinberg@scischina.org for any questions about registration. \n\nThanks! \n\n Evan\n Dragon Run Registration Team"
+    
+    
+ Meteor.call('sendEmail',
+            email,
+            'eweinberg@scischina.org',
+            'Dragon Run/Fun Run Registration Information Received',
+            emailString);
+        
+           
+    
     
 }

@@ -408,7 +408,7 @@ Template.unpaidRunnerEmailList.helpers({
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
-    process.env.MAIL_URL = 'smtp://weinbergmath:tjhyazksulwununr@smtp.gmail.com:587';
+    
   });
 
     

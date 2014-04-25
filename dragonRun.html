@@ -229,7 +229,7 @@ Participant Signature: _______________________________________________ (or Paren
 
 <div id = "registrationList">
     Total Registered: {{numberRegistered}} <p></p>
-    Not Paid ({{numberUnpaid}}):
+    <a href = "/unpaidRunnerEmailList/">Not Paid ({{numberUnpaid}}):</a>
     <table>
     {{#each notPaidRunners}}
     <tr><td>
@@ -292,4 +292,11 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 
 
 </template>
+<template name = "unpaidRunnerEmailList">
 
+    {{#each unpaidRunner}}
+   {{runnerEmail}},   
+    {{/each}}
+
+
+</template>

@@ -29,6 +29,9 @@ if (Meteor.isClient) {
       this.route('paymentConfirmationRunner',{path: '/paymentConfirmation/:id/',
                                               data: function() {return Runners.findOne({_id:this.params.id})},
                                               waitOn: function() { return Meteor.subscribe('runners',{limit:this.params.id})}});
+      this.route('unpaidRunnerEmailList', {path: '/unpaidRunnerEmailList/',
+                                          waitOn: function() { return Meteor.subscribe('runners')}});
+        
   });
     
 Session.set('selectedAge','-1');
@@ -194,6 +197,11 @@ return Runners.find({runnerHasPaid:'true'},{sort:{runnerLastName:-1}}).count();
 numberUnpaid: function(){
     
 return Runners.find({runnerHasPaid:'false'},{sort:{runnerLastName:-1}}).count();        
+},
+numberRegistered: function(){
+    
+ return Runners.find().count();
+    
 }
 });
    
@@ -374,6 +382,16 @@ Template.paymentConfirmationRunner.helpers({
     
 });
 
+Template.unpaidRunnerEmailList.helpers({
+   
+    unpaidRunner: function(){
+        
+        return Runners.find({runnerHasPaid:'false'},{runnerEmail:1});
+    }
+    
+});
+    
+    
 }
 if (Meteor.isServer) {
   Meteor.startup(function () {

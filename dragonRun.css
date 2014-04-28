@@ -370,3 +370,37 @@ margin:10px;
 }
 
 
+.btn{
+    
+ background-color:#EBA100;
+ border: solid 2px #020A66;
+ font-size:20px;
+ height:30px;
+margin-left:auto;
+margin-right:auto;
+border-radius:5px;
+margin-top:30px;
+    
+}
+.btn:hover{
+    
+ background-color:#020A66;
+ border: solid 2px #EBA100;
+ color: #EBA100;
+ font-size:20px;
+ height:30px;
+margin-left:auto;
+margin-right:auto;
+border-radius:5px;
+    
+}
+#confirmStartRace{
+width:200px;    
+    
+}
+#raceConfiguration{
+background:white;
+margin:20px;
+padding:20px;
+    
+}

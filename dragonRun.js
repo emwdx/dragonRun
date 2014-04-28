@@ -1,12 +1,12 @@
 var Runners = new Meteor.Collection('runners');
-
+systemVariables = new Meteor.Collection('systemVariables')
 
 var currentAge = '-1';
 
 
 if (Meteor.isClient) {
  
-
+Meteor.subscribe("systemVariables");
     
  Router.configure({ layoutTemplate: 'mainContent'});
     
@@ -31,8 +31,10 @@ if (Meteor.isClient) {
                                               waitOn: function() { return Meteor.subscribe('runners',{limit:this.params.id})}});
       this.route('unpaidRunnerEmailList', {path: '/unpaidRunnerEmailList/',
                                           waitOn: function() { return Meteor.subscribe('runners')}});
+      this.route('raceConfiguration',{path:'/raceCOnfiguration/'}); 
         
   });
+    
     
 Session.set('selectedAge','-1');
 Session.set("selectedRace",'');
@@ -403,12 +405,27 @@ Template.unpaidRunnerEmailList.helpers({
     
 });
     
+Template.raceConfiguration.events({
+   'click #raceStartButton': function(e){
+    e.preventDefault();
+    if($('#confirmStartRace').val()=='1'){
+    Meteor.call('startRace');    
+        
+    }
+    else{ alert('Confirm what you are doing!');}
+       
+   }
     
+});
+Template.raceConfiguration.helpers({
+raceIsStarted: function(){return (Session.get("raceHasStarted") =='true')}
+    
+})
 }
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
-    
+   
   });
 
     
@@ -418,6 +435,12 @@ Meteor.publish('runners', function(options) {
     return Runners.find({},options);
     
 });
+
+ Meteor.publish('systemVariables',function(){
+     
+  return systemVariables.find();   
+     
+ });    
 Meteor.methods({
   sendEmail: function (to, from, subject, text) {
     check([to, from, subject, text], [String]);
@@ -432,6 +455,15 @@ Meteor.methods({
       subject: subject,
       text: text
     });
+  },
+    
+  startRace: function(){
+      this.unblock();
+      var startTimeObject = {name:"raceStartTime",value:new Date()};
+      var raceHasStartedObject = {name:"raceHasStarted",value:true};
+      systemVariables.upsert({name:"raceStartTime"},{$set:startTimeObject});
+      systemVariables.upsert({name:"raceHasStarted"},{$set:raceHasStartedObject});
+      
   }
 });
 }
@@ -506,3 +538,10 @@ var emailString = "Dear " + name +",\n Thank you for submitting your information
     
     
 }
+
+Deps.autorun(function(){
+var hasStarted = systemVariables.findOne({name:"raceHasStarted"}).value;
+    
+Session.set("raceHasStarted",hasStarted)    
+    
+})

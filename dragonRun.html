@@ -305,3 +305,23 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 
 
 </template>
+<template name = "raceConfiguration">
+<div id = "raceConfiguration">
+<button class = "btn">Add runners</button><p></p>
+    <hr>
+<select id = "confirmStartRace">
+<option value = "">Confirm Race Start?</option>
+<option value = "1">Yes!</option>
+    
+</select>
+<button class = "btn" id = "raceStartButton">Start Race</button>
+<p></p>
+    {{#if raceIsStarted}}
+    <button class = "btn" id = "raceStopButton">Stop Race</button>
+    
+    {{/if}}
+</div>
+
+
+
+</template>

@@ -5,7 +5,9 @@ var currentAge = '-1';
 
 
 if (Meteor.isClient) {
- 
+Meteor.setInterval(function () {
+  Session.set('time', new Date);
+}, 1000); 
 Meteor.subscribe("systemVariables");
     
  Router.configure({ layoutTemplate: 'mainContent'});
@@ -414,13 +416,36 @@ Template.raceConfiguration.events({
     }
     else{ alert('Confirm what you are doing!');}
        
+   },
+   'click #raceStopButton':function(e){
+    e.preventDefault();
+    Meteor.call('stopRace');
    }
     
 });
-Template.raceConfiguration.helpers({
-raceIsStarted: function(){return (Session.get("raceHasStarted") =='true')}
     
-})
+Template.raceConfiguration.helpers({
+raceIsStarted: function(){
+    var raceStarted = systemVariables.findOne({name:"raceHasStarted"})
+    if(!raceStarted){return false;}
+    return raceStarted.value
+},
+raceTime:function(){
+var currentTime = Session.get('time');
+var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
+if(!raceStartTime){return 'not found'}
+var elapsedTime = (currentTime - raceStartTime.value);
+minutes = Math.floor(elapsedTime/60000);
+seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
+if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}
+else{var secondString = seconds.toFixed(0).toString();}
+if(minutes<9){var minuteString = '0'+minutes.toString()}
+else{var minuteString = minutes.toString();}
+return {minutes:minuteString,seconds:secondString};
+}
+
+    
+});
 }
 if (Meteor.isServer) {
   Meteor.startup(function () {
@@ -459,10 +484,18 @@ Meteor.methods({
     
   startRace: function(){
       this.unblock();
-      var startTimeObject = {name:"raceStartTime",value:new Date()};
+      var startTimeObject = {name:"raceStartTime",value:new Date().getTime()};
       var raceHasStartedObject = {name:"raceHasStarted",value:true};
       systemVariables.upsert({name:"raceStartTime"},{$set:startTimeObject});
       systemVariables.upsert({name:"raceHasStarted"},{$set:raceHasStartedObject});
+      
+  },
+  stopRace: function(){
+      this.unblock();
+      var startTimeObject = {name:"raceStartTime",value:new Date()};
+      var raceHasStoppedObject = {name:"raceHasStarted",value:false};
+      systemVariables.update({name:"raceHasStarted"},{$set:raceHasStoppedObject});
+      
       
   }
 });
@@ -539,9 +572,3 @@ var emailString = "Dear " + name +",\n Thank you for submitting your information
     
 }
 
-Deps.autorun(function(){
-var hasStarted = systemVariables.findOne({name:"raceHasStarted"}).value;
-    
-Session.set("raceHasStarted",hasStarted)    
-    
-})

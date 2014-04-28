@@ -307,8 +307,10 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 </template>
 <template name = "raceConfiguration">
 <div id = "raceConfiguration">
+    
 <button class = "btn">Add runners</button><p></p>
     <hr>
+{{#unless raceIsStarted}}
 <select id = "confirmStartRace">
 <option value = "">Confirm Race Start?</option>
 <option value = "1">Yes!</option>
@@ -316,10 +318,14 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 </select>
 <button class = "btn" id = "raceStartButton">Start Race</button>
 <p></p>
+    {{/unless}}
     {{#if raceIsStarted}}
     <button class = "btn" id = "raceStopButton">Stop Race</button>
-    
+    {{#with raceTime}}
+    <h2>Elapsed Race Time: <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h2>
+    {{/with}}
     {{/if}}
+
 </div>
 
 

@@ -259,6 +259,35 @@ Participant Signature: _______________________________________________ (or Paren
 
 </template>
 
+<template name = "registrationListDeleteEnabled">
+
+<div id = "registrationList">
+    Total Registered: {{numberRegistered}} <p></p>
+    <a href = "/unpaidRunnerEmailList/">Not Paid ({{numberUnpaid}}):</a>
+    <table>
+    {{#each notPaidRunners}}
+    <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a><button class = "deleteRunner"></button>
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Paid ({{numberPaid}}):
+    <table>
+    {{#each paidRunners}}
+     <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+    
+
+</template>
+
+
 <template name = "paymentConfirmationFrontPage">
 <div class = "paymentConfirmationContainer">
     <p class = "centerText">
@@ -303,6 +332,32 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
     {{#each unpaidRunner}}
    {{runnerEmail}},   
     {{/each}}
+
+
+</template>
+<template name = "raceConfiguration">
+<div id = "raceConfiguration">
+    
+<button class = "btn">Add runners</button><p></p>
+    <hr>
+{{#unless raceIsStarted}}
+<select id = "confirmStartRace">
+<option value = "">Confirm Race Start?</option>
+<option value = "1">Yes!</option>
+    
+</select>
+<button class = "btn" id = "raceStartButton">Start Race</button>
+<p></p>
+    {{/unless}}
+    {{#if raceIsStarted}}
+    <button class = "btn" id = "raceStopButton">Stop Race</button>
+    {{#with raceTime}}
+    <h2>Elapsed Race Time: <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h2>
+    {{/with}}
+    {{/if}}
+
+</div>
+
 
 
 </template>

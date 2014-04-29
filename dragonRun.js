@@ -24,6 +24,9 @@ Meteor.subscribe("systemVariables");
       this.route('registrationList',{path: '/registrationList/',
                                     data: function() { return Runners.find()},
                                     waitOn: function() {return Meteor.subscribe('runners')}});
+      this.route('registrationListDeleteEnabled',{path: '/registrationListDeleteEnabled/',
+                                    data: function() { return Runners.find()},
+                                    waitOn: function() {return Meteor.subscribe('runners')}});
       this.route('paymentConfirmationFrontPage',{path:'/HISDrag0nRuN2O14/paymentRegistrationConfirmation/',
                                                 data: function() { return Runners.find()},
                                                  waitOn: function() {return Meteor.subscribe('runners')}});
@@ -246,6 +249,16 @@ numberRegistered: function(){
     
 }
 });
+    
+Template.registrationListDeleteEnabled.events({
+  'click .deleteRunner': function(e){
+   e.preventDefault();   
+   var currentRunner = this;
+   Runners.remove({_id:this._id});
+      
+  }
+    
+})
 Template.selectRace.events({
     
     'click .raceSelect': function(e){

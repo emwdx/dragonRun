@@ -220,7 +220,32 @@ numberRegistered: function(){
     
 }
 });
-   
+Template.registrationListDeleteEnabled.helpers({
+
+paidRunners: function(){
+ runnersList = Runners.find({runnerHasPaid:'true'},{sort:{runnerLastName:-1}}).fetch()    
+ return runnersList;   
+},
+notPaidRunners: function(){
+ runnersList = Runners.find({runnerHasPaid:'false'},{sort:{runnerLastName:-1}}).fetch()    
+ return runnersList;   
+},
+
+numberPaid: function(){
+return Runners.find({runnerHasPaid:'true'},{sort:{runnerLastName:-1}}).count();
+    
+},
+    
+numberUnpaid: function(){
+    
+return Runners.find({runnerHasPaid:'false'},{sort:{runnerLastName:-1}}).count();        
+},
+numberRegistered: function(){
+    
+ return Runners.find().count();
+    
+}
+});
 Template.selectRace.events({
     
     'click .raceSelect': function(e){

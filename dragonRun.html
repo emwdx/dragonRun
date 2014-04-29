@@ -258,6 +258,35 @@ Participant Signature: _______________________________________________ (or Paren
 
 </template>
 
+<template name = "registrationListDeleteEnabled">
+
+<div id = "registrationList">
+    Total Registered: {{numberRegistered}} <p></p>
+    <a href = "/unpaidRunnerEmailList/">Not Paid ({{numberUnpaid}}):</a>
+    <table>
+    {{#each notPaidRunners}}
+    <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a><button class = "deleteRunner"></button>
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Paid ({{numberPaid}}):
+    <table>
+    {{#each paidRunners}}
+     <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+    
+
+</template>
+
+
 <template name = "paymentConfirmationFrontPage">
 <div class = "paymentConfirmationContainer">
     <p class = "centerText">

@@ -1,5 +1,6 @@
 var Runners = new Meteor.Collection('runners');
-systemVariables = new Meteor.Collection('systemVariables')
+systemVariables = new Meteor.Collection('systemVariables');
+RaceRunners = new Meteor.Collection('racerunners');
 
 var currentAge = '-1';
 
@@ -9,7 +10,7 @@ Meteor.setInterval(function () {
   Session.set('time', new Date);
 }, 1000); 
 Meteor.subscribe("systemVariables");
-    
+Meteor.subscribe("racerunners");    
  Router.configure({ layoutTemplate: 'mainContent'});
     
   Router.map(function() {
@@ -36,7 +37,19 @@ Meteor.subscribe("systemVariables");
                                               waitOn: function() { return Meteor.subscribe('runners',{limit:this.params.id})}});
       this.route('unpaidRunnerEmailList', {path: '/unpaidRunnerEmailList/',
                                           waitOn: function() { return Meteor.subscribe('runners')}});
-      this.route('raceConfiguration',{path:'/raceCOnfiguration/'}); 
+      this.route('runnerRegistrationSummary',{path:'/registrationSummary/',
+                                              data: function() {return Runners.find()},
+                                              waitOn: function() {return Meteor.subscribe('runners')}});
+      this.route('raceConfiguration',{path:'/raceCOnfiguration/',
+                                     waitOn: function() { return Meteor.subscribe('runners')}}); 
+      this.route('allActiveRunners',{path:'/allActiveRunners/',
+                                      data: function() { return RaceRunners.find()}});
+      this.route('stoppedRunners',{path:'/stoppedRunners/',
+                                      data: function() { return RaceRunners.find()}});
+      this.route('officialRaceTime',{path:'/officialRaceTime/'});
+      this.route('flaggingRunners',{path:'/flaggingRunners7/',
+                                    data:function(){return RaceRunners.find()}});
+                                     
         
   });
     
@@ -250,6 +263,134 @@ numberRegistered: function(){
 }
 });
     
+Template.runnerRegistrationSummary.helpers({
+ totalMenPaid: function(){
+ 
+ return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerGender: "M",runnerHasPaid:'true'}).count();      
+},
+
+totalMenUnpaid: function(){
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerGender: "M",runnerHasPaid:'false'}).count();   
+    
+},
+    
+totalMen: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerGender: "M"}).count();           
+},
+    
+    
+totalWomenPaid: function(){
+ runnersList = Runners.find({runnerRaceSelected: "5K Dragon Run",runnerGender: "F",runnerHasPaid:'true'}).count();   
+ return runnersList;   
+},
+
+totalWomenUnpaid: function(){
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerGender: "F",runnerHasPaid:'false'}).count();   
+    
+},
+    
+totalWomen: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerGender: "F"}).count();           
+},
+    
+total1KPaid: function(){
+ runnersList = Runners.find({runnerRaceSelected: "1K Fun Run",runnerHasPaid:'true'}).count();   
+ return runnersList;   
+},
+
+total1KUnpaid: function(){
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerHasPaid:'false'}).count();   
+    
+},
+    
+total1K: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run"}).count();           
+},
+
+num5K110: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"110"}).count();           
+},
+num5K120: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"120"}).count();           
+},
+num5K130: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"130"}).count();           
+},
+num5KXS: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"XS"}).count();           
+},
+num5KS: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"S"}).count();           
+},
+num5KM: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"M"}).count();           
+},
+num5KL: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"L"}).count();           
+},
+num5KXL: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"XL"}).count();           
+},  
+
+num5KXXL: function(){
+    
+return Runners.find({runnerRaceSelected: "5K Dragon Run",runnerShirtSize:"XXL"}).count();           
+},
+
+num1K110: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"110"}).count();           
+},
+num1K120: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"120"}).count();           
+},
+num1K130: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"130"}).count();           
+},
+num1KXS: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"XS"}).count();           
+},
+num1KS: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"S"}).count();           
+},
+num1KM: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"M"}).count();           
+},
+num1KL: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"L"}).count();           
+},
+num1KXL: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"XL"}).count();           
+},  
+
+num1KXXL: function(){
+    
+return Runners.find({runnerRaceSelected: "1K Fun Run",runnerShirtSize:"XXL"}).count();           
+}
+      
+});
+
+
+    
+    
 Template.registrationListDeleteEnabled.events({
   'click .deleteRunner': function(e){
    e.preventDefault();   
@@ -458,7 +599,35 @@ Template.raceConfiguration.events({
    'click #raceStopButton':function(e){
     e.preventDefault();
     Meteor.call('stopRace');
-   }
+   },
+    'click #addRunners':function(e){
+ e.preventDefault();
+ var allRunners = RaceRunners.find();
+ allRunners.forEach(function(runner){
+    
+ RaceRunners.remove({_id:runner._id});   
+    
+    });
+ var allRunners = Runners.find({runnerHasPaid:'true'});
+ var runnerNumber = 300;
+ allRunners.forEach(function(runner){
+ 
+ var raceRunnerObject = {
+     
+ runnerName: (runner.runnerFirstName + ' ' + runner.runnerLastName),
+ runnerNumber: runnerNumber,
+ runnerIsFlagged: false,
+ runnerIsStopped:false,
+ runnerFlagAssignment:"-1",
+ runnerStopTime: 0
+   
+ }
+ 
+ RaceRunners.insert(raceRunnerObject);     
+ runnerNumber++;     
+ });
+    
+}
     
 });
     
@@ -484,6 +653,73 @@ return {minutes:minuteString,seconds:secondString};
 
     
 });
+Template.allActiveRunners.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerIsStopped:true},{sort:{runnerNumber:-1}}).fetch()    
+ return runnersList;   
+},
+notStoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerIsStopped:false},{sort:{runnerNumber:-1}}).fetch()    
+ return runnersList;   
+},
+
+numberStoppedRunners: function(){
+return RaceRunners.find({runnerIsStopped:true}).count();
+    
+},
+    
+numberNotStopped: function(){
+    
+return RaceRunners.find({runnerIsStopped:false}).count();      
+},
+numberRegistered: function(){
+    
+ return RaceRunners.find().count();
+    
+}    
+    
+    
+});
+Template.stoppedRunners.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerIsStopped:true},{sort:{runnerNumber:-1}}).fetch()    
+ return runnersList;   
+}
+});
+      
+Template.officialRaceTime.helpers({
+raceTime:function(){
+var currentTime = Session.get('time');
+var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
+if(!raceStartTime){return 'not found'}
+var elapsedTime = (currentTime - raceStartTime.value);
+minutes = Math.floor(elapsedTime/60000);
+seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
+if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}
+else{var secondString = seconds.toFixed(0).toString();}
+if(minutes<9){var minuteString = '0'+minutes.toString()}
+else{var minuteString = minutes.toString();}
+return {minutes:minuteString,seconds:secondString};
+}
+    
+    
+});
+    
+Template.flaggingRunners.events({
+    
+'submit form':function(e){
+ e.preventDefault()
+ var flaggedRunner = parseInt($('#flaggingRunnersInput').val())
+ var flaggedRunnerEntry = RaceRunners.findOne({runnerNumber:flaggedRunner});
+ if(flaggedRunnerEntry){
+    alert(flaggedRunnerEntry.runnerName)
+ }
+ else{alert("runnerNotFOund")};
+ $('#flaggingRunnersInput').val('')    
+
+}    
+    
+});
 }
 if (Meteor.isServer) {
   Meteor.startup(function () {
@@ -503,7 +739,13 @@ Meteor.publish('runners', function(options) {
      
   return systemVariables.find();   
      
- });    
+ });   
+    
+ Meteor.publish('racerunners',function(){
+     
+  return RaceRunners.find();   
+     
+ });  
 Meteor.methods({
   sendEmail: function (to, from, subject, text) {
     check([to, from, subject, text], [String]);

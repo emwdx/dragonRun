@@ -125,11 +125,6 @@ border: black dotted 1px;
  margin-right:10px;
  float:left;
  display:inline-block;
-
- 
-    
- 
-    
     
 }
 
@@ -148,14 +143,19 @@ width: 45%;
 
 table{
     
- border: 1px black dotted;   
+ border: 1px black solid;   
     
     
     
 }
 
 tr{
- border: 1px black dotted;   
+ border: 1px black solid;   
+    
+}
+td{
+ border: 1px black solid;   
+ text-align:center;   
     
 }
 .centerText{
@@ -186,6 +186,13 @@ tr{
 
 .textInput:hover{
     border: #EBA100 3px solid;
+    
+}
+
+
+#formShirtSize{
+ 
+    display:none;
     
 }
 
@@ -369,6 +376,19 @@ margin:10px;
     
 }
 
+#runnerRegistrationSummary{
+    
+width:50%;
+margin-left:auto;
+margin-right:auto;
+background-color:#EBA100;
+color:#020A66;
+padding:30px;
+font-size: 20px;
+text-align: center;
+    
+    
+}
 
 .btn{
     
@@ -402,5 +422,53 @@ width:200px;
 background:white;
 margin:20px;
 padding:20px;
+    
+}
+#allActiveRunnersList{
+    
+ background:#EBA100;
+ color:#020A66;
+ padding:20px;
+    
+    
+}
+
+#officialRaceTime{
+ background:#EBA100;
+ color: #020A66;
+ margin-top:-60px;
+ font-size:50px;
+     
+}
+#officialRaceTimeBlock{
+    
+ font-size: 400px;
+ margin:-100px;
+    
+}
+
+#flaggingRunners{
+ background:#EBA100;
+ color:#020A66;   
+ width:60%;
+ margin-left:auto;
+ margin-right:auto;
+ border-radius:5px;
+ padding:10px;
+    
+}
+
+#flaggingRunnersInput{
+height:100px;
+font-size: 40px;
+width:200px;
+    
+    
+}
+#flaggingRunnersButton{
+width:100px;
+font-size:20px;
+margin:10px;
+    
     
 }

@@ -20,7 +20,6 @@
 </template>
 
 <template name = "selectRace">
-<p class =" HISBlue centerText"><i >Please use only Safari or Firefox to register. Chrome is not functioning correctly at the moment.</i></p>
 
 <p class = "centerText" id = "selectRaceParagraph">
     <h1 class = "centerText">I am registering a runner for the (select one):<span id = "select5KRun" class = "raceSelect">5K Dragon Run</span> <span id = "selectFunRun" class = "raceSelect">1K Fun Run</span></h1></p>
@@ -117,7 +116,7 @@ If you would like to make an additional donation to the Carnations School, pleas
 </div>     
 {{/unless}}
      
-<div class = "formElement">  
+<div class = "formElement" id = "formShirtSize">  
     
 <select class = "textInput" name = "runnerShirtSize">
 <option value = "">Select your t-shirt size:</option>
@@ -335,10 +334,60 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 
 
 </template>
+
+<template name = "runnerRegistrationSummary">
+<div id = "runnerRegistrationSummary">
+<h1>Total Numbers:</h1>
+<table>
+<tr><td></td><td>Paid</td><td>Unpaid</td><td>Total</td></tr>
+<tr><td>5K Men</td><td>{{totalMenPaid}}</td><td>{{totalMenUnpaid}}</td><td>{{totalMen}}</td></tr>
+<tr><td>5K Women</td><td>{{totalWomenPaid}}</td><td>{{totalWomenUnpaid}}</td><td>{{totalWomen}}</td></tr>
+<tr><td>1K All</td><td>{{total1KPaid}}</td><td>{{total1KUnpaid}}</td><td>{{total1K}}</td></tr>
+        
+</table>  
+<h1>5K T-shirts:</h1>
+<table>
+<tr><td>T-shirt Size</td><td>Number of Shirts</td></tr>
+<tr><td>110</td><td>{{num5K110}}</td></tr>
+<tr><td>120</td><td>{{num5K120}}</td></tr>
+<tr><td>130</td><td>{{num5K130}}</td></tr>
+<tr><td>XS</td><td>{{num5KXS}}</td></tr>
+<tr><td>S</td><td>{{num5KS}}</td></tr>
+<tr><td>M</td><td>{{num5KM}}</td></tr>
+<tr><td>L</td><td>{{num5KL}}</td></tr>
+<tr><td>XL</td><td>{{num5KXL}}</td></tr>
+<tr><td>XXL</td><td>{{num5KXXL}}</td></tr>
+</table>   
+    
+<h1>1K T-shirts:</h1>    
+<table>
+<tr><td>T-shirt Size</td><td>Number of Shirts</td></tr>
+<tr><td>110</td><td>{{num1K110}}</td></tr>
+<tr><td>120</td><td>{{num1K120}}</td></tr>
+<tr><td>130</td><td>{{num1K130}}</td></tr>
+<tr><td>XS</td><td>{{num1KXS}}</td></tr>
+<tr><td>S</td><td>{{num1KS}}</td></tr>
+<tr><td>M</td><td>{{num1KM}}</td></tr>
+<tr><td>L</td><td>{{num1KL}}</td></tr>
+<tr><td>XL</td><td>{{num1KXL}}</td></tr>
+<tr><td>XXL</td><td>{{num1KXXL}}</td></tr>
+</table>
+</div>
+
+
+
+
+</template>
+
 <template name = "raceConfiguration">
 <div id = "raceConfiguration">
     
-<button class = "btn">Add runners</button><p></p>
+<button class = "btn" id = "addRunners">Add runners</button><p></p>
+<ul id = "raceConfigurationPageList">
+<li><a href = "/allActiveRunners/">All active runners</a></li> 
+<li><a href = "/stoppedRunners/">Stopped runners</a></li>
+<li><a href = "/flagRunnersPage/">Flag active runners</a></li>   
+</ul>
     <hr>
 {{#unless raceIsStarted}}
 <select id = "confirmStartRace">
@@ -361,3 +410,76 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 
 
 </template>
+<<<<<<< HEAD
+=======
+
+<template name = "allActiveRunners">
+<div id = "allActiveRunnersList">
+    Total Runners: {{numberActiveRunners}} <p></p>
+    <a href = "/unpaidRunnerEmailList/">Not Stopped ({{numberNotStopped}}):</a>
+    <table>
+    {{#each notStoppedRunners}}
+    <tr><td>
+    {{runnerNumber}} - {{runnerName}}
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Stopped({{numberStoppedRunners}}):
+    <table>
+    {{#each stoppedRunners}}
+     <tr><td>
+    {{runnerNumber}} - {{runnerName}} - {{runnerStopTime}}
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+
+</template>
+<template name = "officialRaceTime">
+<div id = "officialRaceTime">
+<h1 class = "centerText"> Official Race Time:</h1>    
+{{#with raceTime}}
+    <h1 id = "officialRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h1>
+    {{/with}}    
+</div>
+</template>
+
+<template name = "stoppedRunners">
+<div id = "allActiveRunnersList">
+    
+    
+    
+    <table>
+    {{#each stoppedRunners}}
+     <tr><td>
+    {{runnerNumber}} - {{runnerName}} - {{runnerStopTime}}
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "flaggingRunners">
+<div id = "flaggingRunners">
+Enter the number of the spotted runner here:
+<form id = "flagRunnersForm">
+<input type = "number" max="800" min = "500" id = "flaggingRunnersInput"><button id = "flaggingRunnersButton">Flag Runner</button>
+
+    
+</form>
+
+    
+</div>
+
+
+
+
+
+
+
+</template>
+>>>>>>> addTimingFunctions

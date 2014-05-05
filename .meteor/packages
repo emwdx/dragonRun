@@ -8,5 +8,5 @@ insecure
 jquery
 iron-router
 blaze-layout
-force-ssl
 email
+force-ssl

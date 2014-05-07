@@ -491,13 +491,13 @@ Template.paymentConfirmationRunner.helpers({
    
     isChecked: function(){
         
-     var runnerHasPaid = (Runners.findOne({runnerRegistrationCode:Session.get('currentPaymentRegistrationCode')}).runnerHasPaid=='true');
-     
-     if(runnerHasPaid){
+     var runner = (Runners.findOne({runnerRegistrationCode:Session.get('currentPaymentRegistrationCode')}));
+     if(runner){
+     if(runner.runnerHasPaid=='true'){
          return true;
      }
     else{ return false;}
-    
+     }
    
         
     },

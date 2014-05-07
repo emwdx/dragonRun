@@ -1,0 +1,258 @@
+<head>
+  <title>HIS Dragon Run Registration</title>
+</head>
+
+    
+  
+  
+ 
+
+
+<template name = "mainContent">
+<div class = "headerBar">
+    
+<h1 class = "centerText HISGold" id = "header"> 2014 HIS Dragon Run & Fun Run Registration</h1> 
+
+    
+</div>
+    {{> yield}}
+  
+</template>
+
+
+
+<template name = "registrationList">
+
+<div id = "registrationList">
+    Total Registered: {{numberRegistered}} <p></p>
+    <a href = "/unpaidRunnerEmailList/">Not Paid ({{numberUnpaid}}):</a>
+    <table>
+    {{#each notPaidRunners}}
+    <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Paid ({{numberPaid}}):
+    <table>
+    {{#each paidRunners}}
+     <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+    
+
+</template>
+
+<template name = "registrationListDeleteEnabled">
+
+<div id = "registrationList">
+    Total Registered: {{numberRegistered}} <p></p>
+    <a href = "/unpaidRunnerEmailList/">Not Paid ({{numberUnpaid}}):</a>
+    <table>
+    {{#each notPaidRunners}}
+    <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a><button class = "deleteRunner"></button>
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Paid ({{numberPaid}}):
+    <table>
+    {{#each paidRunners}}
+     <tr><td>
+    <a href = "/registrationConfirmation/{{_id}}/{{runnerRegistrationCode}}/">{{runnerFirstName}} {{runnerLastName}} - {{runnerRegistrationCode}} </a>
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+    
+
+</template>
+
+
+
+<template name = "unpaidRunnerEmailList">
+
+    {{#each unpaidRunner}}
+   {{runnerEmail}},   
+    {{/each}}
+
+
+</template>
+
+<template name = "runnerRegistrationSummary">
+<div id = "runnerRegistrationSummary">
+<h1>Total Numbers:</h1>
+<table>
+<tr><td></td><td>Paid</td><td>Unpaid</td><td>Total</td></tr>
+<tr><td>5K Men</td><td>{{totalMenPaid}}</td><td>{{totalMenUnpaid}}</td><td>{{totalMen}}</td></tr>
+<tr><td>5K Women</td><td>{{totalWomenPaid}}</td><td>{{totalWomenUnpaid}}</td><td>{{totalWomen}}</td></tr>
+<tr><td>1K All</td><td>{{total1KPaid}}</td><td>{{total1KUnpaid}}</td><td>{{total1K}}</td></tr>
+        
+</table>  
+<h1>5K T-shirts:</h1>
+<table>
+<tr><td>T-shirt Size</td><td>Number of Shirts</td></tr>
+<tr><td>110</td><td>{{num5K110}}</td></tr>
+<tr><td>120</td><td>{{num5K120}}</td></tr>
+<tr><td>130</td><td>{{num5K130}}</td></tr>
+<tr><td>XS</td><td>{{num5KXS}}</td></tr>
+<tr><td>S</td><td>{{num5KS}}</td></tr>
+<tr><td>M</td><td>{{num5KM}}</td></tr>
+<tr><td>L</td><td>{{num5KL}}</td></tr>
+<tr><td>XL</td><td>{{num5KXL}}</td></tr>
+<tr><td>XXL</td><td>{{num5KXXL}}</td></tr>
+</table>   
+    
+<h1>1K T-shirts:</h1>    
+<table>
+<tr><td>T-shirt Size</td><td>Number of Shirts</td></tr>
+<tr><td>110</td><td>{{num1K110}}</td></tr>
+<tr><td>120</td><td>{{num1K120}}</td></tr>
+<tr><td>130</td><td>{{num1K130}}</td></tr>
+<tr><td>XS</td><td>{{num1KXS}}</td></tr>
+<tr><td>S</td><td>{{num1KS}}</td></tr>
+<tr><td>M</td><td>{{num1KM}}</td></tr>
+<tr><td>L</td><td>{{num1KL}}</td></tr>
+<tr><td>XL</td><td>{{num1KXL}}</td></tr>
+<tr><td>XXL</td><td>{{num1KXXL}}</td></tr>
+</table>
+</div>
+
+
+
+
+</template>
+
+<template name = "raceConfiguration">
+<div id = "raceConfiguration">
+Connection to server: {{connectedToServer}}<p></p>
+<button class = "btn" id = "addRunners">Add runners</button><p></p>
+<ul id = "raceConfigurationPageList">
+<li><a href = "/allActiveRunners/">All active runners</a></li> 
+<li><a href = "/stoppedRunners/">Stopped runners</a></li>
+<li><a href = "/flagRunnersPage/">Flag active runners</a></li>   
+</ul>
+    <hr>
+{{#unless raceIsStarted}}
+<select id = "confirmStartRace">
+<option value = "">Confirm Race Start?</option>
+<option value = "1">Yes!</option>
+    
+</select>
+<button class = "btn" id = "raceStartButton">Start Race</button>
+<p></p>
+    {{/unless}}
+    {{#if raceIsStarted}}
+    <button class = "btn" id = "raceStopButton">Stop Race</button>
+    {{#with raceTime}}
+    <h2>Elapsed Race Time: <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h2>
+    {{/with}}
+    {{/if}}
+
+</div>
+
+
+
+</template>
+
+
+<template name = "allActiveRunners">
+<div id = "allActiveRunnersList">
+    Total Runners: {{numberActiveRunners}} <p></p>
+    <a href = "/unpaidRunnerEmailList/">Not Stopped ({{numberNotStopped}}):</a>
+    <table>
+    {{#each notStoppedRunners}}
+    <tr><td>
+    {{runnerNumber}} - {{runnerName}}
+    </td>
+    </tr>
+    
+    {{/each}}
+    </table>
+    Stopped({{numberStoppedRunners}}):
+    <table>
+    {{#each stoppedRunners}}
+     <tr><td>
+    {{runnerNumber}} - {{runnerName}} - {{runnerStopTime}}
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+
+</template>
+<template name = "officialRaceTime">
+<div id = "officialRaceTime">
+<h1 class = "centerText"> Official Race Time:</h1>    
+{{#with raceTime}}
+    <h1 id = "officialRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h1>
+    {{/with}}    
+</div>
+</template>
+
+<template name = "stoppedRunners">
+<div id = "allActiveRunnersList">
+    
+    
+    
+    <table>
+    {{#each stoppedRunners}}
+     <tr><td>
+    {{runnerNumber}} - {{runnerName}} - {{runnerStopTimeString}}
+    </td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "flaggingRunners">
+<div id = "flaggingRunners">
+Enter the number of the spotted runner here:
+<form id = "flagRunnersForm">
+<input type = "number" max="800" min = "500" id = "flaggingRunnersInput"><button id = "flaggingRunnersButton">Flag Runner</button>
+
+    
+</form>
+
+Number of spotters: {{numOfSpotters}}<br>
+Current spotter index: {{currentSpotterIndex}}
+
+<table>
+<tr>
+<td><a href = "/flaggerNumber/1/">Spotter 1:</a></td><td><a href = "/flaggerNumber/2/">Spotter 2:</a></td><td><a href = "/flaggerNumber/3/">Spotter 3:</a></td><td><a href = "/flaggerNumber/4/">Spotter 4:</a></td>
+</tr>    
+<tr>
+<td>{{#each spotter1Numbers}}{{runnerNumber}}<br>{{/each}}</td>
+<td>{{#each spotter2Numbers}}{{runnerNumber}}<br>{{/each}}</td>
+<td>{{#each spotter3Numbers}}{{runnerNumber}}<br>{{/each}}</td>
+<td>{{#each spotter4Numbers}}{{runnerNumber}}<br>{{/each}}</td>
+</tr>     
+    
+</table>
+    
+</div>
+
+</template>
+
+<template name = "flaggerPortal">
+<div id = "flaggedRunnersList">
+
+    {{#each flaggedRunnerNumbers}}   
+    <audio  autoplay id = "tone"><source src="/tone.mp3" type="audio/mpeg"></audio>
+    <button class = "flaggedRunnersButton">{{runnerNumber}}</button><p></p>
+    {{/each}}
+    
+    
+</div>
+
+</template>

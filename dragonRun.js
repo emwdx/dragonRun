@@ -13,7 +13,7 @@ Session.set("currentPaymentRegistrationCode",'');
     
     
 Meteor.setInterval(function () {
-  Session.set('time', new Date);
+  Session.set('time', new Date());
 }, 1000); 
 Meteor.subscribe("systemVariables");
 Meteor.subscribe("racerunners");    
@@ -92,7 +92,7 @@ Template.raceConfiguration.events({
     });
  //var allRunners = Runners.find({runnerHasPaid:'true'});
  
- var runnerNumber = 300;
+ var runnerNumber = 200;
  /*
  allRunners.forEach(function(runner){
  
@@ -111,7 +111,7 @@ Template.raceConfiguration.events({
  runnerNumber++;     
  });
  */
- for(i = runnerNumber;i<400;i++){
+ for(i = runnerNumber;i<600;i++){
  var raceRunnerObject = {
      
  runnerName: ("Runner " + i),
@@ -156,9 +156,11 @@ else{var secondString = seconds.toFixed(0).toString();}
 if(minutes<9){var minuteString = '0'+minutes.toString()}
 else{var minuteString = minutes.toString();}
 return {minutes:minuteString,seconds:secondString};
-}
+},
+connectedToServer:function(){
+ return Meteor.status().status;
+ }
 
-    
 });
 Template.allActiveRunners.helpers({
 stoppedRunners: function(){

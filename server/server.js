@@ -1,13 +1,18 @@
   Meteor.startup(function () {
     // code to run on server at startup
-   
+    var numOfUsers = Meteor.users.find().count();
+    if(numOfUsers==0){
+        
+     Accounts.createUser({username:"admin",password:"test1234!",email:"eweinberg@scischina.org"});   
+        
+    }
   });
 
     
-Meteor.publish('runners', function(options) { 
+Meteor.publish('runners', function(publishLimit,options) { 
     
     
-    return Runners.find({},options);
+    return Runners.find(publishLimit,options);
     
 });
 
@@ -54,4 +59,41 @@ Meteor.methods({
       
       
   }
+});
+
+Runners.allow({
+  update: function(){
+      
+  return Meteor.user();      
+      
+  },
+  remove: function(){
+  
+  return Meteor.user();
+      
+  },
+  insert: function(){
+   
+    return true;  
+      
+  }
+});
+
+RaceRunners.allow({
+ update: function(){
+      
+  return true;      
+      
+  },
+  remove: function(){
+  
+  return true;
+      
+  },
+  insert: function(){
+   
+    return true;  
+      
+  }    
+    
 });

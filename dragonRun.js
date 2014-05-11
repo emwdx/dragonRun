@@ -1,4 +1,5 @@
 
+
 var currentAge = '-1';
 
 
@@ -20,6 +21,26 @@ Meteor.subscribe("racerunners");
 
     
     
+Template.loginForm.events({
+  
+  'click #loginButton': function(e){
+  e.preventDefault()
+  var username = $('#inputUsername').val();
+  var password = $('#inputPassword').val();
+  var previousPath = Session.get('currentURL');
+   
+      
+  Meteor.loginWithPassword(username,password,function(){
+   Router.go(previousPath);   
+   
+  
+  });
+  
+  
+  }
+  
+  
+  });
 
 
 
@@ -276,5 +297,6 @@ RaceRunners.update({_id:currentRunner._id},{$set:{runnerStopTime:elapsedTime,run
 
     
 });
+    
 
 }

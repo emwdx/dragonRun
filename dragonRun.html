@@ -10,7 +10,7 @@
 
 <template name = "mainContent">
 <div class = "headerBar">
-    
+ <h6 id = "login">{{> loginButtons }}</h6>
 <h1 class = "centerText HISGold" id = "header"> 2014 HIS Dragon Run & Fun Run Registration</h1> 
 
     
@@ -255,4 +255,33 @@ Current spotter index: {{currentSpotterIndex}}
     
 </div>
 
+</template>
+
+<template name = "loading">
+<div id = "loading">
+<h3>Please wait...</h3>    
+</div>
+</template>
+
+<template name = "loginForm">
+<div id = "loggingIn">
+
+     <input type="text" class = "textInput" id="inputUsername" placeholder="Username">
+     <input type="password" id="inputPassword" class = "textInput" placeholder="password"><br>
+     <button id = "loginButton" class = 'btn'>Log in</button>
+  
+</div>
+    
+    {{#unless IsLoggingIn}}
+
+    {{/unless}}
+ 
+
+ {{#if IsLoggingIn}}
+<p class = "text-center">Logging in...</p>
+    {{/if}}
+
+</template>
+<template name="accessDenied">
+  You can't get here! Please log in.
 </template>

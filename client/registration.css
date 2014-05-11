@@ -302,3 +302,49 @@ margin:10px;
 
     
 }
+
+#sortedRegistration5K{
+ width:50%;
+ margin-left:auto;
+ margin-right:auto;
+ float:none;
+ background-color:#EBA100;
+ color: #020A66;
+    
+    
+}
+#sortedTable5K{
+ width:90%;
+ margin-left:auto;
+ margin-right:auto;
+ float:none;   
+}
+#sortedTable1K{
+ width:90%;
+ margin-left:auto;
+ margin-right:auto;
+ float:none;   
+}
+    
+
+#sortedRegistration1K{
+ width:50%;
+ margin-left:auto;
+ margin-right:auto;
+ float:none;
+ background-color:#EBA100;
+ color: #020A66;
+    
+    
+}
+
+#login{
+ margin-left:20px;
+ padding:0px;
+ margin-top:0px;
+ margin-bottom:-20px;
+display:flex
+    float:none;
+    
+    
+}

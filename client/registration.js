@@ -459,11 +459,11 @@ retrievedRecords: function(){
 Template.paymentConfirmationFrontPage.events({
    
     'click #submitRegistrationCode': function(e){
-     if($('#paymentPassword').val()=='dragonRunMay17!'){
+     
      e.preventDefault();
      var currentCode = $('#paymentRegistrationCode').val();    
      Session.set('currentPaymentRegistrationCode',currentCode);   
-     }
+     
     }
     
 });
@@ -527,6 +527,48 @@ Template.unpaidRunnerEmailList.helpers({
     
 });
 
+Template.registrationSorted5K.helpers({
+   runners: function(){return Runners.find({runnerRaceSelected:"5K Dragon Run",runnerHasPaid:'true'},{sort:{runnerBibNumber:1}})},
+   runnerAgeGroup: function(){
+       
+    var runnerAgeValue = this.runnerAge;
+    if(runnerAgeValue=='1'){
+     return 'LS';   
+        
+    }
+    else if(runnerAgeValue=='2'){
+     return 'MS';   
+    }
+    else if(runnerAgeValue =='3'){
+     return 'HS';
+    }
+    else{ return 'A'}
+       
+   }
+    
+    
+});
+Template.registrationSorted1K.helpers({
+   runners: function(){return Runners.find({runnerRaceSelected:"1K Fun Run",runnerHasPaid:'true'},{sort:{runnerBibNumber:-1}})},
+   runnerAgeGroup: function(){
+       
+    var runnerAgeValue = this.runnerAge;
+    if(runnerAgeValue=='1'){
+     return 'LS';   
+        
+    }
+    else if(runnerAgeValue=='2'){
+     return 'MS';   
+    }
+    else if(runnerAgeValue =='3'){
+     return 'HS';
+    }
+    else{ return 'A'}
+       
+   }
+    
+    
+});
 
 var getRegistrationInfo = function(){
     

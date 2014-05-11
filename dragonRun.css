@@ -221,3 +221,17 @@ border-radius:5px;
  display:none;   
     
 }
+#loading{
+ background-color:#020A66;
+ width:50%;
+ margin-left:auto;
+ margin-right:auto;
+ color: #EBA100;
+}
+#loggingIn{
+ background-color:#EBA100;
+ width:50%;
+ margin-left:auto;
+ margin-right:auto;
+ color: #020A66;
+}

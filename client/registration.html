@@ -210,9 +210,7 @@ Participant Signature: _______________________________________________ (or Paren
 
 <template name = "paymentConfirmationFrontPage">
 <div class = "paymentConfirmationContainer">
-    <p class = "centerText">
-    <input type = "password" id = "paymentPassword" class = "textInput paymentTextInputs" >
-    </p>
+    
     
     
      <p class = "centerText">
@@ -245,5 +243,30 @@ Has payment been received? <input type = "checkbox" id = "paymentHasBeenReceived
 </div>
 
 
+
+</template>
+
+<template name = "registrationSorted5K">
+<div id = "sortedRegistration5K">
+<table id = "sortedTable5K">
+<thead><td>Number</td><td>Name</td><td>Gender</td><td>Age Group</td><td>Shirt Size</td></thead>
+  
+    {{#each runners}}
+    <tr><td>{{runnerBibNumber}}</td><td>{{runnerFirstName}} {{runnerLastName}}</td><td>{{runnerGender}}</td><td>{{runnerAgeGroup}}</td><td>{{runnerShirtSize}}</td></tr>
+    {{/each}}
+</table> 
+</div>
+
+</template>
+<template name = "registrationSorted1K">
+<div id = "sortedRegistration1K">
+<table id = "sortedTable1K">
+<thead><td>Number</td><td>Name</td><td>Gender</td><td>Age Group</td><td>Shirt Size</td></thead>
+  
+    {{#each runners}}
+    <tr><td>{{runnerBibNumber}}</td><td>{{runnerFirstName}} {{runnerLastName}}</td><td>{{runnerGender}}</td><td>{{runnerAgeGroup}}</td><td>{{runnerShirtSize}}</td></tr>
+    {{/each}}
+</table> 
+</div>
 
 </template>

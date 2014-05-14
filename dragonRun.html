@@ -192,6 +192,7 @@ Connection to server: {{connectedToServer}}<p></p>
 </div>
 
 </template>
+
 <template name = "officialRaceTime">
 <div id = "officialRaceTime">
 <h1 class = "centerText"> Official Race Time:</h1>    
@@ -235,14 +236,29 @@ Current spotter index: {{currentSpotterIndex}}
 <td><a href = "/flaggerNumber/1/">Spotter 1:</a></td><td><a href = "/flaggerNumber/2/">Spotter 2:</a></td><td><a href = "/flaggerNumber/3/">Spotter 3:</a></td><td><a href = "/flaggerNumber/4/">Spotter 4:</a></td>
 </tr>    
 <tr>
-<td>{{#each spotter1Numbers}}{{runnerNumber}}<br>{{/each}}</td>
-<td>{{#each spotter2Numbers}}{{runnerNumber}}<br>{{/each}}</td>
-<td>{{#each spotter3Numbers}}{{runnerNumber}}<br>{{/each}}</td>
-<td>{{#each spotter4Numbers}}{{runnerNumber}}<br>{{/each}}</td>
+<td>{{#each spotter1Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+<td>{{#each spotter2Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+<td>{{#each spotter3Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+<td>{{#each spotter4Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
 </tr>     
     
 </table>
+<table>
+<tr>
+<td>Spotter 1:</td><td>Spotter 2:</td><td>Spotter 3:</td><td>Spotter 4:</td>
+</tr>    
+<tr>
+<td>{{#each spotter1NumbersStopped}}<button class = "flaggingRunnersOopsButton">X</button>{{runnerNumber}} - {{runnerStopTimeString}}<br>{{/each}}</td>
+<td>{{#each spotter2NumbersStopped}}<button class = "flaggingRunnersOopsButton">X</button>{{runnerNumber}} - {{runnerStopTimeString}}<br>{{/each}}</td>
+<td>{{#each spotter3NumbersStopped}}<button class = "flaggingRunnersOopsButton">X</button>{{runnerNumber}} - {{runnerStopTimeString}}<br>{{/each}}</td>
+<td>{{#each spotter4NumbersStopped}}<button class = "flaggingRunnersOopsButton">X</button>{{runnerNumber}} - {{runnerStopTimeString}}<br>{{/each}}</td>
+</tr>     
     
+</table>    
     {{#unless connectedToServer}}
     Connecting to server....
     {{/unless}}
@@ -291,3 +307,4 @@ Current spotter index: {{currentSpotterIndex}}
 <template name="accessDenied">
   You can't get here! Please log in.
 </template>
+

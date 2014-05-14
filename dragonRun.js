@@ -182,36 +182,11 @@ stoppedRunners: function(){
  runnersList = RaceRunners.find({runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
  return runnersList;   
 },
-runnerStopTimeString: function(){
-    
- var elapsedTime = this.runnerStopTime;
- minutes = Math.floor(elapsedTime/60000);
-seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
-if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}
-else{var secondString = seconds.toFixed(0).toString();}
-if(minutes<9){var minuteString = '0'+minutes.toString()}
-else{var minuteString = minutes.toString();}
-return minuteString+":"+secondString;
- 
-    
-}
+runnerStopTimeString: stopTimeString,
 });
       
 Template.officialRaceTime.helpers({
-raceTime:function(){
-var currentTime = Session.get('time');
-var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
-if(!raceStartTime){return 'not found'}
-var elapsedTime = (currentTime - raceStartTime.value);
-minutes = Math.floor(elapsedTime/60000);
-seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
-if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}
-else{var secondString = seconds.toFixed(0).toString();}
-if(minutes<9){var minuteString = '0'+minutes.toString()}
-else{var minuteString = minutes.toString();}
-return {minutes:minuteString,seconds:secondString};
-}
-    
+raceTime:raceTime  
     
 });
     
@@ -244,7 +219,37 @@ Template.flaggingRunners.events({
  $('#flaggingRunnersInput').val('')
  
 
-}    
+},
+'click .flaggingRunnersRemoveFlag':function(e){
+    
+ e.preventDefault();
+ currentRunner = this;
+ RaceRunners.update({_id:currentRunner._id},{$set:{runnerIsFlagged:false,runnerFlagAssignment:-1}});
+
+},
+'click .flaggingRunnersStopButton':function(e){
+    
+ e.preventDefault();
+ currentRunner = this;
+ var clientTime = parseInt(Session.get('time'));   
+ var currentServerTime = TimeSync.serverTime(clientTime);   
+ 
+var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
+if(!raceStartTime){return 'not found'}
+var elapsedTime = (currentServerTime - raceStartTime.value);
+
+RaceRunners.update({_id:currentRunner._id},{$set:{runnerStopTime:elapsedTime,runnerIsStopped:true}});
+},
+'click .flaggingRunnersOopsButton':function(e){
+    
+ e.preventDefault();
+ currentRunner = this;
+ 
+RaceRunners.update({_id:currentRunner._id},{$set:{runnerStopTime:0,runnerIsStopped:false}});
+},
+
+    
+   
 
 });
 
@@ -269,22 +274,40 @@ Template.flaggingRunners.helpers({
     },
     spotter1Numbers: function(){
         
-        return RaceRunners.find({runnerFlagAssignment:1,runnerIsStopped:false},{sort:{runnerNumber:-1}});
+        return RaceRunners.find({runnerFlagAssignment:1,runnerIsStopped:false,runnerIsFlagged:true},{sort:{runnerNumber:-1}});
     },
     spotter2Numbers: function(){
-        return RaceRunners.find({runnerFlagAssignment:2,runnerIsStopped:false},{sort:{runnerNumber:-1}});
+        return RaceRunners.find({runnerFlagAssignment:2,runnerIsStopped:false,runnerIsFlagged:true},{sort:{runnerNumber:-1}});
         
     },
     spotter3Numbers: function(){
         
-        return RaceRunners.find({runnerFlagAssignment:3,runnerIsStopped:false},{sort:{runnerNumber:-1}});
+        return RaceRunners.find({runnerFlagAssignment:3,runnerIsStopped:false,runnerIsFlagged:true},{sort:{runnerNumber:-1}});
     },
     spotter4Numbers: function(){
-         return RaceRunners.find({runnerFlagAssignment:4,runnerIsStopped:false},{sort:{runnerNumber:-1}});
+         return RaceRunners.find({runnerFlagAssignment:4,runnerIsStopped:false,runnerIsFlagged:true},{sort:{runnerNumber:-1}});
         
     },
     
-connectedToServer:function(){
+    spotter1NumbersStopped: function(){
+        
+        return RaceRunners.find({runnerFlagAssignment:1,runnerIsStopped:true},{sort:{runnerStopTime:-1}});
+    },
+    spotter2NumbersStopped: function(){
+        return RaceRunners.find({runnerFlagAssignment:2,runnerIsStopped:true},{sort:{runnerStopTime:-1}});
+        
+    },
+    spotter3NumbersStopped: function(){
+        
+        return RaceRunners.find({runnerFlagAssignment:3,runnerIsStopped:true},{sort:{runnerStopTime:-1}});
+    },
+    spotter4NumbersStopped: function(){
+         return RaceRunners.find({runnerFlagAssignment:4,runnerIsStopped:true},{sort:{runnerStopTime:-1}});
+        
+    },
+    runnerStopTimeString: stopTimeString,
+    
+    connectedToServer:function(){
  return (Meteor.status().status=='connected');
  }
     
@@ -325,4 +348,34 @@ RaceRunners.update({_id:currentRunner._id},{$set:{runnerStopTime:elapsedTime,run
 });
     
 
+}
+
+function raceTime(){
+var currentTime = Session.get('time');
+var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
+if(!raceStartTime){return 'not found'}
+var elapsedTime = (currentTime - raceStartTime.value);
+minutes = Math.floor(elapsedTime/60000);
+seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
+if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}
+else{var secondString = seconds.toFixed(0).toString();}
+if(minutes<9){var minuteString = '0'+minutes.toString()}
+else{var minuteString = minutes.toString();}
+return {minutes:minuteString,seconds:secondString};    
+    
+    
+}
+
+function stopTimeString(){
+ var elapsedTime = this.runnerStopTime;
+ minutes = Math.floor(elapsedTime/60000);
+seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
+if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}
+else{var secondString = seconds.toFixed(0).toString();}
+if(minutes<9){var minuteString = '0'+minutes.toString()}
+else{var minuteString = minutes.toString();}
+return minuteString+":"+secondString;
+ 
+        
+    
 }

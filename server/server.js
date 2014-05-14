@@ -47,8 +47,8 @@ Meteor.methods({
       this.unblock();
       var startTimeObject = {name:"raceStartTime",value:new Date().getTime()};
       var raceHasStartedObject = {name:"raceHasStarted",value:true};
-      systemVariables.upsert({name:"raceStartTime"},{$set:startTimeObject});
-      systemVariables.upsert({name:"raceHasStarted"},{$set:raceHasStartedObject});
+      systemVariables.update({name:"raceStartTime"},{$set:startTimeObject});
+      systemVariables.update({name:"raceHasStarted"},{$set:raceHasStartedObject});
       
   },
   stopRace: function(){
@@ -80,6 +80,24 @@ Runners.allow({
 });
 
 RaceRunners.allow({
+ update: function(){
+      
+  return true;      
+      
+  },
+  remove: function(){
+  
+  return true;
+      
+  },
+  insert: function(){
+   
+    return true;  
+      
+  }    
+    
+});
+systemVariables.allow({
  update: function(){
       
   return true;      

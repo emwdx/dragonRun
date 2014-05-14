@@ -8,6 +8,6 @@ jquery
 iron-router
 blaze-layout
 email
-force-ssl
 accounts-password
 accounts-ui
+timesync

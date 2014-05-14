@@ -135,11 +135,13 @@
 <template name = "raceConfiguration">
 <div id = "raceConfiguration">
 Connection to server: {{connectedToServer}}<p></p>
+    
+
 <button class = "btn" id = "addRunners">Add runners</button><p></p>
 <ul id = "raceConfigurationPageList">
 <li><a href = "/allActiveRunners/">All active runners</a></li> 
 <li><a href = "/stoppedRunners/">Stopped runners</a></li>
-<li><a href = "/flagRunnersPage/">Flag active runners</a></li>   
+<li><a href = "/flaggingRunners7/">Flag active runners</a></li>   
 </ul>
     <hr>
 {{#unless raceIsStarted}}
@@ -217,13 +219,14 @@ Connection to server: {{connectedToServer}}<p></p>
 
 <template name = "flaggingRunners">
 <div id = "flaggingRunners">
+    {{#if connectedToServer}}
 Enter the number of the spotted runner here:
 <form id = "flagRunnersForm">
-<input type = "number" max="800" min = "500" id = "flaggingRunnersInput"><button id = "flaggingRunnersButton">Flag Runner</button>
+<input type = "number" max="800" min = "500" id = "flaggingRunnersInput"><button id = "flaggingRunnersButton" type = "submit">Flag Runner</button>
 
     
 </form>
-
+{{/if}}
 Number of spotters: {{numOfSpotters}}<br>
 Current spotter index: {{currentSpotterIndex}}
 
@@ -240,6 +243,9 @@ Current spotter index: {{currentSpotterIndex}}
     
 </table>
     
+    {{#unless connectedToServer}}
+    Connecting to server....
+    {{/unless}}
 </div>
 
 </template>

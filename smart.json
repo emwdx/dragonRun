@@ -1,6 +1,6 @@
 {
   "packages": {
     "iron-router": {},
-    "jquery-mobile": {}
+    "timesync": {}
   }
 }

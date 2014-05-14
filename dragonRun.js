@@ -15,7 +15,7 @@ Session.set("currentPaymentRegistrationCode",'');
     
 Meteor.setInterval(function () {
   Session.set('time', new Date());
-}, 1000); 
+}, 10); 
 Meteor.subscribe("systemVariables");
 Meteor.subscribe("racerunners");    
 
@@ -137,7 +137,17 @@ return {minutes:minuteString,seconds:secondString};
 },
 connectedToServer:function(){
  return Meteor.status().status;
- }
+ },
+serverTime: function(){
+ var clientTime = parseInt(Session.get('time'));   
+ return TimeSync.serverTime(clientTime);   
+    
+},
+clientOffset: function(){
+Session.set("serverOffset",TimeSync.serverOffset());
+var offset = Session.get("serverOffset");
+return offset;    
+}
 
 });
 Template.allActiveRunners.helpers({
@@ -211,21 +221,31 @@ Template.flaggingRunners.events({
  e.preventDefault()
  var flaggedRunner = parseInt($('#flaggingRunnersInput').val())
  var flaggedRunnerEntry = RaceRunners.findOne({runnerNumber:flaggedRunner, runnerIsFlagged:false});
- var currentSpotterIndex = systemVariables.findOne({name:"currentSpotterIndex"});
+ var currentSpotterIndex = systemVariables.findOne({name:"currentSpotterIndex"}).value;
+ var currentSpotter = systemVariables.findOne({name:"currentSpotterIndex"});
  
  var numOfSpotters = parseInt(systemVariables.findOne({name:"numOfSpotters"}).value);   
+
  
  if(flaggedRunnerEntry&&(!flaggedRunnerEntry.runnerIsStopped)){
-    RaceRunners.update({_id:flaggedRunnerEntry._id},{$set:{runnerIsFlagged:true,runnerFlagAssignment:(currentSpotterIndex.value+1)}})
-    newSpotterIndex = ((currentSpotterIndex.value+1)%numOfSpotters);
-     
-    systemVariables.update({_id:currentSpotterIndex._id},{$set:{value:newSpotterIndex}});
+    RaceRunners.update({_id:flaggedRunnerEntry._id},{$set:{runnerIsFlagged:true,runnerFlagAssignment:(currentSpotterIndex)}});
+    
+    if(currentSpotterIndex<numOfSpotters){
+        currentSpotterIndex++;
+    }
+    else if(currentSpotterIndex==numOfSpotters){
+        currentSpotterIndex=1;
+        
+    }
+    
+    systemVariables.update({_id:currentSpotter._id},{$set:{value:currentSpotterIndex}});
  }
- else{alert("runnerNotFOund")};
- $('#flaggingRunnersInput').val('')    
+ else{alert("runnerNotFound")};
+ $('#flaggingRunnersInput').val('')
+ 
 
 }    
-    
+
 });
 
 
@@ -243,7 +263,7 @@ Template.flaggingRunners.helpers({
     currentSpotterIndex: function(){ 
         var currentSpotterIndex = systemVariables.findOne({name:"currentSpotterIndex"});
         if(currentSpotterIndex){
-            return currentSpotterIndex.value+1;
+            return currentSpotterIndex.value;
         }
         else{ return null;}
     },
@@ -262,7 +282,11 @@ Template.flaggingRunners.helpers({
     spotter4Numbers: function(){
          return RaceRunners.find({runnerFlagAssignment:4,runnerIsStopped:false},{sort:{runnerNumber:-1}});
         
-    }
+    },
+    
+connectedToServer:function(){
+ return (Meteor.status().status=='connected');
+ }
     
     
 });
@@ -284,10 +308,12 @@ Template.flaggerPortal.events({
     
  e.preventDefault();
  currentRunner = this;
- var currentTime = Session.get('time');
+ var clientTime = parseInt(Session.get('time'));   
+ var currentServerTime = TimeSync.serverTime(clientTime);   
+ 
 var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
 if(!raceStartTime){return 'not found'}
-var elapsedTime = (currentTime - raceStartTime.value);
+var elapsedTime = (currentServerTime - raceStartTime.value);
 console.log(elapsedTime);
 RaceRunners.update({_id:currentRunner._id},{$set:{runnerStopTime:elapsedTime,runnerIsStopped:true}});
 }

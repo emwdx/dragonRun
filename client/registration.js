@@ -480,9 +480,19 @@ Template.paymentConfirmationRunner.events({
         else{
         Session.set('currentSelectedRunnerHasPaid','false');
         }
-     var currentID = Runners.findOne({runnerRegistrationCode:Session.get('currentPaymentRegistrationCode')})._id;
+     var currentRunner = Runners.findOne({runnerRegistrationCode:Session.get('currentPaymentRegistrationCode')});
      var currentValue = Session.get('currentSelectedRunnerHasPaid');
-     Runners.update({_id:currentID},{$set:{runnerHasPaid:currentValue,runnerPaidDate:new Date()}});
+     if(currentRunner.runnerRaceSelected=="5K Dragon Run"){
+         var nextRegistrationNumber = Runners.find({runnerRaceSelected:"5K Dragon Run"},{sort:{runnerBibNumber:-1}}).fetch()[0].runnerBibNumber+1;
+         Runners.update({_id:currentRunner._id},{$set:{runnerHasPaid:currentValue,runnerPaidDate:(new Date()),runnerBibNumber:nextRegistrationNumber}});
+         
+     }
+     else if(currentRunner.runnerRaceSelected=="1K Fun Run"){
+         var nextRegistrationNumber = Runners.find({runnerRaceSelected:"1K Fun Run",runnerBibNumber:{$gt:0}},{sort:{runnerBibNumber:1}}).fetch()[0].runnerBibNumber-1;
+     Runners.update({_id:currentRunner._id},{$set:{runnerHasPaid:currentValue,runnerPaidDate:(new Date()),runnerBibNumber:nextRegistrationNumber}});
+                  
+     }
+     
      
     
 }
@@ -641,3 +651,12 @@ var emailString = "Dear " + name +",\n Thank you for submitting your information
     
 }
 
+sendRunnerNumberEmail = function(name, email, number, id){
+    
+var sendRunnerNumberEmailString = "Dear " + name + ",\nWe hope you are excited about the Dragon Run/Fun Run this Saturday. On behalf of the committee, I want to thank you for participating.\n\n Your official runner number for this year's event is "+ number + ". \n\nYou will be able to pick up your registration bag on Saturday between 7:00 and 7:30 AM. The race will start promptly at 8:00 AM.\n\n The bags will be given out according to this runner number, so please have it available when you arrive on Saturday. We will also have lists available for looking up your number if you forget.\n\nSee you on Saturday! \n\n Evan\n Dragon Run Registration Team"
+
+var sendRunnerNumberSubject = 'Dragon Run/Fun Run: Runner Number '+ number;
+
+Meteor.call('sendEmail',email,'eweinberg@scischina.org',sendRunnerNumberSubject,sendRunnerNumberEmailString);
+
+}

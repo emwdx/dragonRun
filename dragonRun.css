@@ -151,9 +151,17 @@ padding:20px;
      
 }
 #officialRaceTimeBlock{
-    
+ width:200px;    
  font-size: 400px;
  margin:-100px;
+    
+}
+
+#smallRaceTimeBlock{
+ background:#EBA100;
+ color: #020A66;   
+ font-size: 32px;
+ margin:-10px;
     
 }
 
@@ -161,10 +169,44 @@ padding:20px;
  background:#EBA100;
  color:#020A66;   
  width:60%;
+
  margin-left:auto;
  margin-right:auto;
  border-radius:5px;
+ padding:10px;   
+    
+    
+    
+}
+
+#flaggingRunnersRight{
+ background:#EBA100;
+ color:#020A66;   
+ width:45%;
+ float:right;
+ margin-left:auto;
+ margin-right:20px;
+ border-radius:5px;
  padding:10px;
+    
+}
+#flaggingRunnersLeft{
+background:#EBA100;
+ color:#020A66;   
+ width:45%;
+ float:left;
+ margin-left:20px;
+ margin-right:auto;
+ border-radius:5px;
+ padding:10px;    
+    
+    
+    
+}
+
+.estimatedTimeTable{
+    
+ width:150px;   
     
 }
 

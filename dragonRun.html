@@ -198,7 +198,7 @@ Connection to server: {{connectedToServer}}<p></p>
 <h1 class = "centerText"> Official Race Time:</h1>    
 {{#with raceTime}}
     <h1 id = "officialRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h1>
-    {{/with}}    
+{{/with}}    
 </div>
 </template>
 
@@ -245,9 +245,57 @@ Current spotter index: {{currentSpotterIndex}}
 <td>{{#each spotter4Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
     <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
 </tr>     
+
     
+</table>    
+    {{#unless connectedToServer}}
+    Connecting to server....
+    {{/unless}}
+</div>
+
+</template>
+
+<template name = "missionControl">
+<div id = "flaggingRunnersLeft">
+<table >
+<tr><td class = "estimatedTimeTable">Below 20</td><td class = "estimatedTimeTable">20-25</td>
+    <td class = "estimatedTimeTable">25-30</td><td class = "estimatedTimeTable">Over 30</td>    
+</tr>
+<tr><td class = "estimatedTimeTable">{{#each runnersET1}}<button class = "flaggingRunnersEstimatedTime">F</button>{{runnerNumber}}<br>{{/each}}</td>
+    <td class = "estimatedTimeTable">{{#each runnersET2}}<button class = "flaggingRunnersEstimatedTime">F</button>{{runnerNumber}}<br>{{/each}}</td>
+    <td class = "estimatedTimeTable">{{#each runnersET3}}<button class = "flaggingRunnersEstimatedTime">F</button>{{runnerNumber}}<br>{{/each}}</td>
+    <td class = "estimatedTimeTable">{{#each runnersET4}}<button class = "flaggingRunnersEstimatedTime">F</button>{{runnerNumber}}<br>{{/each}}</td>    
+</tr>    
 </table>
+</div>
+<div id = "flaggingRunnersRight">
+    {{>smallRaceTime}}
+    {{#if connectedToServer}}
+Enter the number of the spotted runner here:
+<form id = "flagRunnersForm">
+<input type = "number" max="800" min = "500" id = "flaggingRunnersInput"><button id = "flaggingRunnersButton" type = "submit">Flag Runner</button>
+
+    
+</form>
+{{/if}}
+Number of spotters: {{numOfSpotters}}<br>
+Current spotter index: {{currentSpotterIndex}}
+
 <table>
+<tr>
+<td><a href = "/flaggerNumber/1/">Spotter 1:</a></td><td><a href = "/flaggerNumber/2/">Spotter 2:</a></td><td><a href = "/flaggerNumber/3/">Spotter 3:</a></td><td><a href = "/flaggerNumber/4/">Spotter 4:</a></td>
+</tr>    
+<tr>
+<td>{{#each spotter1Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+<td>{{#each spotter2Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+<td>{{#each spotter3Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+<td>{{#each spotter4Numbers}}<button class = "flaggingRunnersRemoveFlag">R</button>{{runnerNumber}}
+    <button class = "flaggingRunnersStopButton">S</button><br>{{/each}}</td>
+</tr>     
+<tr><td>Stopped Runners:</td></tr>
 <tr>
 <td>Spotter 1:</td><td>Spotter 2:</td><td>Spotter 3:</td><td>Spotter 4:</td>
 </tr>    
@@ -266,9 +314,11 @@ Current spotter index: {{currentSpotterIndex}}
 
 </template>
 
+
+
 <template name = "flaggerPortal">
 <div id = "flaggedRunnersList">
-
+ {{>smallRaceTime}}
     {{#each flaggedRunnerNumbers}}   
     <audio  autoplay id = "tone"><source src="/tone.mp3" type="audio/mpeg"></audio>
     <button class = "flaggedRunnersButton">{{runnerNumber}}</button><p></p>
@@ -308,3 +358,10 @@ Current spotter index: {{currentSpotterIndex}}
   You can't get here! Please log in.
 </template>
 
+<template name = "smallRaceTime">
+<div class = "smallRaceTime">
+{{#with raceTime}}
+    <h3 id = "smallRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h3>
+{{/with}}      
+</div>
+</template>

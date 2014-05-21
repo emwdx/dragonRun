@@ -485,12 +485,12 @@ Template.paymentConfirmationRunner.events({
      if(currentRunner.runnerRaceSelected=="5K Dragon Run"){
          var nextRegistrationNumber = Runners.find({runnerRaceSelected:"5K Dragon Run"},{sort:{runnerBibNumber:-1}}).fetch()[0].runnerBibNumber+1;
          Runners.update({_id:currentRunner._id},{$set:{runnerHasPaid:currentValue,runnerPaidDate:(new Date()),runnerBibNumber:nextRegistrationNumber}});
-         
+         alert("This runner is Runner #"+nextRegistrationNumber+".");
      }
      else if(currentRunner.runnerRaceSelected=="1K Fun Run"){
          var nextRegistrationNumber = Runners.find({runnerRaceSelected:"1K Fun Run",runnerBibNumber:{$gt:0}},{sort:{runnerBibNumber:1}}).fetch()[0].runnerBibNumber-1;
      Runners.update({_id:currentRunner._id},{$set:{runnerHasPaid:currentValue,runnerPaidDate:(new Date()),runnerBibNumber:nextRegistrationNumber}});
-                  
+         alert("This runner is Runner #"+nextRegistrationNumber+".");
      }
      
      

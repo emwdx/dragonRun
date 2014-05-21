@@ -69,7 +69,7 @@ Template.raceConfiguration.events({
     
     });
         
- var allRunners = Runners.find({runnerHasPaid:'true'});
+ var allRunners = Runners.find({runnerHasPaid:'true',runnerRaceSelected:"5K Dragon Run"});
  
  allRunners.forEach(function(runner){
  
@@ -169,6 +169,86 @@ stoppedRunners: function(){
  return runnersList;   
 },
 runnerStopTimeString: stopTimeString,
+});
+    
+Template.stoppedRunnersByNumber.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerIsStopped:true},{sort:{runnerNumber:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+    
+Template.stoppedRunnersAdultMale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"M",runnerAge:"4",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+Template.stoppedRunnersAdultFemale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"F",runnerAge:"4",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+
+Template.stoppedRunnersHSMale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"M",runnerAge:"3",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+Template.stoppedRunnersHSFemale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"F",runnerAge:"3",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});    
+
+Template.stoppedRunnersMSMale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"M",runnerAge:"2",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+Template.stoppedRunnersMSFemale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"F",runnerAge:"2",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});    
+Template.stoppedRunnersLSMale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"M",runnerAge:"1",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+Template.stoppedRunnersLSFemale.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerGender:"F",runnerAge:"1",runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});    
+    
+    
+    
+Template.stoppedRunners.helpers({
+stoppedRunners: function(){
+ runnersList = RaceRunners.find({runnerIsStopped:true},{sort:{runnerStopTime:1}}).fetch()    
+ return runnersList;   
+},
+runnerStopTimeString: stopTimeString,
+});
+Template.emergencyContactList.helpers({
+runners: function(){return Runners.find({runnerHasPaid:"true"},{sort:{runnerBibNumber:1}})} 
 });
       
 Template.officialRaceTime.helpers({
@@ -493,17 +573,24 @@ RaceRunners.update({_id:currentRunner._id},{$set:{runnerStopTime:elapsedTime,run
 });
 
 Template.smallRaceTime.helpers({
-raceTime:raceTime     
+raceTime:raceTime,
+connection:function(){
+    
+if(Meteor.status().status=='connected'){return "green"}
+else{return "red"}
+    
+}
     
 });
 
 }
 
 function raceTime(){
-var currentTime = Session.get('time');
+var clientTime = parseInt(Session.get('time'));
 var raceStartTime = systemVariables.findOne({name:"raceStartTime"});
+var currentServerTime = TimeSync.serverTime(clientTime);
 if(!raceStartTime){return 'not found'}
-var elapsedTime = (currentTime - raceStartTime.value);
+var elapsedTime = (currentServerTime - raceStartTime.value);
 minutes = Math.floor(elapsedTime/60000);
 seconds = Math.floor(((elapsedTime/60000)-Math.floor(elapsedTime/60000))*60)
 if(seconds<=9){var secondString = '0'+seconds.toFixed(0).toString()}

@@ -140,8 +140,19 @@ Connection to server: {{connectedToServer}}<p></p>
 <button class = "btn" id = "addRunners">Add runners</button><p></p>
 <ul id = "raceConfigurationPageList">
 <li><a href = "/allActiveRunners/">All active runners</a></li> 
-<li><a href = "/stoppedRunners/">Stopped runners</a></li>
-<li><a href = "/flaggingRunners7/">Flag active runners</a></li>   
+<li><a href = "/flaggingRunners7/">Flag active runners</a></li>
+<li><a href = "/emergency/">Emergency Contact List</a></li>
+Stopped Runners:
+<li><a href = "/stoppedRunners/">All stopped runners</a></li>
+<li><a href = "/stoppedRunners/number/">Stopped runners by number</a></li>
+<li><a href = "/results/adult/male/">Adult Male</a></li>
+<li><a href = "/results/adult/female/">Adult Female</a></li>
+<li><a href = "/results/HS/male/">HS Male</a></li>
+<li><a href = "/results/HS/female/">HS Female</a></li>
+<li><a href = "/results/MS/male/">MS Male</a></li>
+<li><a href = "/results/MS/female/">MS Female</a></li>
+<li><a href = "/results/LS/male/">LS Male</a></li>
+<li><a href = "/results/LS/female">LS Female</a></li>
 </ul>
     <hr>
 {{#unless raceIsStarted}}
@@ -193,33 +204,154 @@ Connection to server: {{connectedToServer}}<p></p>
 
 </template>
 
+
 <template name = "officialRaceTime">
 <div id = "officialRaceTime">
-<h1 class = "centerText"> Official Race Time:</h1>    
+<h1 class = "centerText"> Official Dragon Run Time:</h1>    
 {{#with raceTime}}
-    <h1 id = "officialRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h1>
+    <div id = "officialRaceTimeBlock" class = "centerText"> 
+        <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></div>
 {{/with}}    
 </div>
 </template>
 
 <template name = "stoppedRunners">
-<div id = "allActiveRunnersList">
-    
-    
-    
-    <table>
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - All Runners by Time</p>
+    <table class = "resultsTable">
     {{#each stoppedRunners}}
-     <tr><td>
-    {{runnerNumber}} - {{runnerName}} - {{runnerStopTimeString}}
-    </td>
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
     </tr>
     {{/each}}
     </table>
 </div>
 </template>
 
+<template name = "stoppedRunnersByNumber">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - All Runners by Number</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersAdultMale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - Adult Male</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersAdultFemale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - Adult Female</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersHSMale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - High School Male</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersHSFemale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - High School Female</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+<template name = "stoppedRunnersMSMale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - Middle School Male</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersMSFemale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - Middle School Female</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersLSMale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - Lower School Male</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "stoppedRunnersLSFemale">
+<div class = "resultsList">
+    <p class = "centerText">5K Dragon Run Results - Lower School Female</p>
+    <table class = "resultsTable">
+    {{#each stoppedRunners}}
+     <tr><td>{{runnerNumber}}</td><td>{{runnerName}}</td> <td>{{runnerStopTimeString}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+<template name = "emergencyContactList">
+<div class = "resultsList">
+    <p class = "centerText">All Runners - Emergency Contact Information</p>
+    <table class = "resultsTable">
+    <tr><td>Number</td><td>Runner Name</td><td>Emergency Contact Name</td><td>Emergency Contact Phone</td>
+    </tr>
+    {{#each runners}}
+     <tr><td>{{runnerBibNumber}}</td><td>{{runnerFirstName}} {{runnerLastName}}</td> <td>{{runnerEmergencyName}}</td><td>{{runnerEmergencyPhone}}</td>
+    </tr>
+    {{/each}}
+    </table>
+</div>
+</template>
+
+
 <template name = "flaggingRunners">
 <div id = "flaggingRunners">
+    {{>smallRaceTime}}
     {{#if connectedToServer}}
 Enter the number of the spotted runner here:
 <form id = "flagRunnersForm">
@@ -318,9 +450,10 @@ Current spotter index: {{currentSpotterIndex}}
 
 <template name = "flaggerPortal">
 <div id = "flaggedRunnersList">
+
  {{>smallRaceTime}}
     {{#each flaggedRunnerNumbers}}   
-    <audio  autoplay id = "tone"><source src="/tone.mp3" type="audio/mpeg"></audio>
+    
     <button class = "flaggedRunnersButton">{{runnerNumber}}</button><p></p>
     {{/each}}
     
@@ -359,9 +492,31 @@ Current spotter index: {{currentSpotterIndex}}
 </template>
 
 <template name = "smallRaceTime">
-<div class = "smallRaceTime">
+<div id = "smallRaceTime">
 {{#with raceTime}}
-    <h3 id = "smallRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span></h3>
-{{/with}}      
+    <h3 id = "smallRaceTimeBlock" class = "centerText"> <span id = "raceElapsedTime">{{minutes}}:{{seconds}}</span> <span id = "connectionIndicator" style="background:{{connection}}">O</span></h3>
+{{/with}}     
 </div>
+</template>
+<template name = "raceResults">
+<div id = "resultsMainPage">
+<p ><h2 class = "centerText">2014 5K Dragon Run Results</h2></p>
+<h4 class = "centerText">Thank you to everyone who participated! Here are the results for the 5K Race:</h4>
+<h3>
+<ul>
+
+<li><a href = "/stoppedRunners/number/">Race times by number</a></li>
+<li><a href = "/results/adult/male/">Adult Male</a></li>
+<li><a href = "/results/adult/female/">Adult Female</a></li>
+<li><a href = "/results/HS/male/">HS Male</a></li>
+<li><a href = "/results/HS/female/">HS Female</a></li>
+<li><a href = "/results/MS/male/">MS Male</a></li>
+<li><a href = "/results/MS/female/">MS Female</a></li>
+<li><a href = "/results/LS/male/">LS Male</a></li>
+<li><a href = "/results/LS/female">LS Female</a></li>
+</ul>
+</h3>
+
+</div>
+
 </template>

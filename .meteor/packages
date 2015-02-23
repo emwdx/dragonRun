@@ -5,10 +5,10 @@
 
 standard-app-packages
 jquery
-iron-router
-blaze-layout
 email
 accounts-password
 accounts-ui
 timesync
 force-ssl
+blaze
+iron:router

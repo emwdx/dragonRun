@@ -1,8 +1,11 @@
 /* CSS declarations go here */
+
+
+
 headerBar{
     
     height: 40px;
-    background-color: #020A66;
+    background-color: #003f87;
     margin:0px;
     
     
@@ -15,8 +18,7 @@ headerBar{
 
 body{
 
- font-family:"Avenir";  
- background-image:url("dragonRunBK.jpg");
+ font-family:"Avenir","Helvetica";  
  background-repeat:no-repeat;
  background-position:center top;
  background-size:cover;
@@ -24,11 +26,16 @@ body{
  margin-right:auto;
  width:100%;
  z-index:-1;
-    
-    
+  color:  #003f87; 
+ font-size:20px;
+ background-color:#003f87; 
 }
 
-
+#selectLang{
+    
+ width:50px;   
+    
+}
 
 table{
     
@@ -54,11 +61,11 @@ td{
     
 }
 .HISGold{
-    color: #EBA100;
+    color: #FCDC3B;
     
 }
 .HISBlue{
-    color: #020A66;
+    color: #003f87;
     opacity:1 ;
     
 }
@@ -67,11 +74,31 @@ td{
 
 .HISGoldSolid{
     
-  background-color:#EBA100;
+  background-color:#FCDC3B;
     
 }
 
+.HISBlueSolid{
+    
+  background-color:#003f87;
+  color:#FCDC3B  
+}
 
+.gray-bg{
+    
+ background-color:#ccc;
+ margin:10px;
+ border-radius:5px;
+ padding:10px;   
+    
+}
+
+.outline{
+    
+ border: #003f87 2px solid;   
+ border-radius:5px;
+ margin: 3px;    
+}
 
 #registrationList{
      
@@ -91,8 +118,8 @@ td{
 width:50%;
 margin-left:auto;
 margin-right:auto;
-background-color:#EBA100;
-color:#020A66;
+background-color:#FCDC3B;
+color:#003f87;
 padding:30px;
 font-size: 20px;
 text-align: center;
@@ -102,9 +129,9 @@ text-align: center;
 
 .btn{
     
- background-color:#EBA100;
- border: solid 2px #020A66;
- font-size:20px;
+ background-color:#FCDC3B;
+ border: solid 2px #003f87;
+ font-size:18px;
  height:30px;
 margin-left:auto;
 margin-right:auto;
@@ -114,10 +141,10 @@ margin-top:30px;
 }
 .btn:hover{
     
- background-color:#020A66;
- border: solid 2px #EBA100;
- color: #EBA100;
- font-size:20px;
+ background-color:#003f87;
+ border: solid 2px #FCDC3B;
+ color: #FCDC3B;
+ font-size:18px;
  height:30px;
 margin-left:auto;
 margin-right:auto;
@@ -136,8 +163,8 @@ padding:20px;
 }
 .resultsList{
     
- background:#EBA100;
- color:#020A66;
+ background:#FCDC3B;
+ color:#003f87;
  padding:10px;
  width:50%;
  font-size:20px;
@@ -150,8 +177,8 @@ padding:20px;
 }
 
 #officialRaceTime{
- background:#EBA100;
- color: #020A66;
+ background:#FCDC3B;
+ color: #003f87;
  margin-top:-120px;
  font-size:50px;
  
@@ -168,8 +195,8 @@ padding:20px;
 }
 
 #smallRaceTimeBlock{
- background:#EBA100;
- color: #020A66;   
+ background:#FCDC3B;
+ color: #003f87;   
  font-size: 32px;
  margin-left:auto;
  margin-right:auto;
@@ -189,8 +216,8 @@ display:inline;
 }
 
 #flaggingRunners{
- background:#EBA100;
- color:#020A66;   
+ background:#FCDC3B;
+ color:#003f87;   
  width:60%;
 
  margin-left:auto;
@@ -203,8 +230,8 @@ display:inline;
 }
 
 #flaggingRunnersRight{
- background:#EBA100;
- color:#020A66;   
+ background:#FCDC3B;
+ color:#003f87;   
  width:45%;
  float:right;
  margin-left:auto;
@@ -214,8 +241,8 @@ display:inline;
     
 }
 #flaggingRunnersLeft{
-background:#EBA100;
- color:#020A66;   
+background:#FCDC3B;
+ color:#003f87;   
  width:45%;
  float:left;
  margin-left:20px;
@@ -260,8 +287,8 @@ margin:10px;
 
 .flaggedRunnersButton{
     
- background-color:#EBA100;
- border: solid 2px #020A66;
+ background-color:#FCDC3B;
+ border: solid 2px #003f87;
  font-size:100px;
  height:120px;
 margin-left:auto;
@@ -272,9 +299,9 @@ margin-top:30px;
 }
 .flaggedRunnersButton:hover{
     
- background-color:#020A66;
- border: solid 2px #EBA100;
- color: #EBA100;
+ background-color:#003f87;
+ border: solid 2px #FCDC3B;
+ color: #FCDC3B;
  font-size:100px;
  height:120px;
 margin-left:auto;
@@ -288,23 +315,23 @@ border-radius:5px;
     
 }
 #loading{
- background-color:#020A66;
+ background-color:#003f87;
  width:50%;
  margin-left:auto;
  margin-right:auto;
- color: #EBA100;
+ color: #FCDC3B;
 }
 #loggingIn{
- background-color:#EBA100;
+ background-color:#FCDC3B;
  width:50%;
  margin-left:auto;
  margin-right:auto;
- color: #020A66;
+ color: #003f87;
 }
 
 #resultsMainPage{
- background:#EBA100;
- color:#020A66;   
+ background:#FCDC3B;
+ color:#003f87;   
  width:50%;
  margin-left:auto;
  margin-right:auto;
@@ -314,3 +341,41 @@ border-radius:5px;
     
     
 }
+
+.navbar-default .navbar-text {
+    color: #003f87; 
+}
+
+
+.navbar-default{
+    
+ border: 0px solid #FCDC3B;   
+ border-radius:0px;    
+}
+
+.navbar-default .navbar-brand,
+.navbar-default a{
+color: #003f87;   
+}
+
+.navbar-nav > .active{
+ background-color: #003f87;   
+ color: #FCDC3B;      
+    
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #FCDC3B;
+    background-color: #003f87; 
+}
+
+
+@media (max-width: 375px) {
+body {
+      width: 90%;   
+     }
+}  
+
+

@@ -12,3 +12,10 @@ timesync
 force-ssl
 blaze
 iron:router
+mrt:qr-scanner
+steeve:jquery-qrcode
+reactive-var
+twbs:bootstrap
+mrt:accounts-admin-ui-bootstrap-3
+useraccounts:bootstrap
+alanning:roles

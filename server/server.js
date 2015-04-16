@@ -6,13 +6,30 @@
      Accounts.createUser({username:"admin",password:"test1234!",email:"eweinberg@scischina.org"});   
         
     }
+      
+  var adminUser = Meteor.users.findOne({username:'admin'});
+
+ if (Meteor.users.findOne(adminUser._id)){
+            Roles.addUsersToRoles(adminUser._id, ['admin']);
+     
+ }
+
+if(!Meteor.roles.findOne({name: "race-runner"}))
+            Roles.createRole("race-runner");
+
+        if(!Meteor.roles.findOne({name: "staff"}))
+            Roles.createRole("staff");
+
+        if(!Meteor.roles.findOne({name: "wechat"}))
+            Roles.createRole("wechat");
+      
+      
   });
 
-    
+
 Meteor.publish('runners', function(publishLimit,options) { 
     
-    
-    return Runners.find(publishLimit,options);
+    return Runners.find({year:2015},options);
     
 });
 
@@ -74,7 +91,7 @@ Runners.allow({
   },
   insert: function(){
    
-    return true;  
+    return Meteor.user();  
       
   }
 });
@@ -114,4 +131,10 @@ systemVariables.allow({
       
   }    
     
+});
+
+
+Accounts.onCreateUser(function(options,user){
+user.roles = ['race-runner'];    
+return user;    
 });

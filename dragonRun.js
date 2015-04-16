@@ -3,14 +3,18 @@
 var currentAge = '-1';
 
 
+
+
+
+
 if (Meteor.isClient) {
-Session.set('selectedAge','-1');
+
 Session.set("selectedRace",'');
 Session.set("showSubmitButton","false");
 Session.set("runnerAdditionalDonation","0");
 Session.set("registrationComplete",'false');
 Session.set("currentPaymentRegistrationCode",'');    
-    
+Session.set("selectedLanguage",'EN');    
     
     
 Meteor.setInterval(function () {
@@ -18,8 +22,25 @@ Meteor.setInterval(function () {
 }, 10); 
 Meteor.subscribe("systemVariables");
 Meteor.subscribe("racerunners");    
+Meteor.subscribe("runners",{},{});
 
+
+Template.registerHelper('isAdminUser',function(){
+
+return Roles.userIsInRole(Meteor.user(),['admin']);    
     
+});
+Template.registerHelper('isStaffUser',function(){
+
+return Roles.userIsInRole(Meteor.user(),['staff','admin']);    
+    
+});
+    
+Template.registerHelper('isWechatUser',function(){
+
+return Roles.userIsInRole(Meteor.user(),['wechat','admin']);    
+    
+});
     
 Template.loginForm.events({
   

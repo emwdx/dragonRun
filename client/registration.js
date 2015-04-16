@@ -1,3 +1,27 @@
+var currentQRCode = ReactiveVar(qrScanner.message());
+
+
+Template.header.events({
+    
+'click .navbar-nav > li > a':function(e){
+ 
+ $('.navbar-nav > li').removeClass('active');
+ 
+ $(e.target).parent().addClass('active');
+    
+    
+},
+'change #selectLang':function(e){
+    
+ Session.set('selectedLanguage',$(e.target).val())   
+    
+}
+    
+    
+});
+
+
+
 Template.registrationForm.helpers({
     
    ageGroupSelected: function(){
@@ -25,7 +49,7 @@ Template.registrationForm.helpers({
     
     registrationTotal: function(){
         
-    var registrationFee = getRegistrationFee();
+    var registrationFee = 100;
         
     var additionalDonation = parseFloat(Session.get("runnerAdditionalDonation"));
     var runnerTotal = 0;
@@ -69,6 +93,16 @@ Template.registrationForm.helpers({
      return (Session.get("showSubmitButton")=='true');   
         
     },
+    userEmail: function(){
+     
+    return Meteor.user().emails[0].address;    
+        
+    },
+    userPhone: function(){
+    
+    return Meteor.user().profile.phone;    
+        
+    }
      
 
     
@@ -84,7 +118,7 @@ Template.registrationForm.events({
     },
     'click #submitRegistration':function(e){
         e.preventDefault();
-        var textInputs = $('.textInput').select();
+        var textInputs = $('.form-control').select();
         var numOfBlank = 0;
         for(i=0;i<textInputs.length;i++){
             if($(textInputs[i]).val()==''){
@@ -98,18 +132,17 @@ Template.registrationForm.events({
         else{
           
        
-        var registrationObject = getRegistrationInfo();     
+        var registrationObject = getNewRegistrationInfo();     
         console.log(registrationObject);
         Runners.insert(registrationObject,function(error,result){
         $('#submitRegistration').html('Submitting....');
             
         if(error==undefined){
             
-           Session.set('currentRegistrationCode',registrationObject.runnerRegistrationCode);
-        var id = Runners.findOne({runnerRegistrationCode:registrationObject.runnerRegistrationCode})
-        Router.go('/registrationConfirmation/'+result+'/'+registrationObject.runnerRegistrationCode+'/');
+           
+        Router.go('/portal/');
         Session.set("registrationComplete",'true');    
-        sendConfirmationEmail(registrationObject.runnerFirstName + ' ' + registrationObject.runnerLastName, registrationObject.runnerEmail, registrationObject.runnerRegistrationCode,result); 
+        //sendConfirmationEmail(registrationObject.runnerFirstName + ' ' + registrationObject.runnerLastName, registrationObject.runnerEmail, registrationObject.runnerRegistrationCode,result); 
             
         }    
         });
@@ -130,7 +163,23 @@ Template.registrationForm.events({
     },
     'change #registrationMustPayToComplete':function(){
         
-        if($('#registrationMustPayToComplete').is(":checked")){
+var payBoolean = $('#registrationMustPayToComplete').is(":checked");
+        
+var raceDisclaimerSelect = $('#raceDisclaimer').is(":checked");        
+    if(payBoolean&raceDisclaimerSelect){
+        Session.set('showSubmitButton','true');
+        }
+        else{
+        Session.set('showSubmitButton','false');    
+        }
+        
+    },
+    'change #raceDisclaimerSelect':function(){
+        
+var payBoolean = $('#registrationMustPayToComplete').is(":checked");
+        
+var raceDisclaimerSelect = $('#raceDisclaimerSelect').is(":checked");        
+    if(payBoolean&raceDisclaimerSelect){
         Session.set('showSubmitButton','true');
         }
         else{
@@ -154,8 +203,8 @@ Template.selectRace.events({
     'click .raceSelect': function(e){
     e.stopPropagation();
     var selectedRace = $(e.currentTarget).html();
-    $('.raceSelect').removeClass('HISGoldSolid');
-    $(e.currentTarget).addClass('HISGoldSolid');
+    $('.raceSelect').removeClass('HISBlueSolid');
+    $(e.currentTarget).addClass('HISBlueSolid');
     Session.set("selectedRace",selectedRace);
     
     }
@@ -199,14 +248,7 @@ Template.confirmationPage.helpers({
          
      },
     
-    runnerRegistrationFee: function(){
-     var age = this.runnerAge;
-     if(age=="1"){
-         return 50
-     }
-     else{return 100;}
-        
-    },
+    
     
     runnerTotalFee: function(){
         
@@ -233,17 +275,164 @@ Template.confirmationPage.helpers({
      return(Session.get("registrationComplete")=='true');   
         
     }
-        
+});
+
+Template.userPortal.helpers({
+    
+myRegistrations: function(){
+var currentUserEmail = Meteor.user().emails[0].address;
+var myregistrations = Runners.find({runnerEmail:currentUserEmail});
+    
+if(myregistrations){return myregistrations};
+
+    return null;
+    
+},
+myTotalPayment:function(){
+var currentUserEmail = Meteor.user().emails[0].address;  
+var fee = 0;
+var myRunners = Runners.find({runnerEmail:currentUserEmail});
+myRunners.forEach(function(r){
+
+fee+=(100+parseFloat(r.runnerAdditionalDonation));    
+
+});
+    
+return fee;
     
     
+},
+userEmail:function(){
+return Meteor.user().emails[0].address;    
+    
+}
     
 });
+
+Template.myRegistrationItem.helpers({
+runnerFullName: function(){
+    
+return (this.runnerFirstName +" "+ this.runnerLastName);    
+},
+    
+runnerPaidStatus: function(){
+    
+if(this.runnerHasPaid){
+
+return "<span class = 'text-success'>Paid</span>" ;   
+    
+}
+else{
+
+return "<span class = 'text-danger'>Not Paid</span>";
+    
+}
+}
+    
+});
+
+Template.myRegistrationItem.events({
+'click .registrationDelete':function(e){
+e.preventDefault();
+var confirmDelete = confirm("Are you sure you want to delete this registration?");
+if(confirmDelete){
+Runners.remove({_id:this._id});    
+    
+}
+    
+}
+    
+});
+
+Template.paymentOptions.events({
+'click #setWeChatID':function(){
+var id=$('#userWeChat').val();
+Meteor.users.update({_id:Meteor.user()._id},{$set:{"profile.wechat":id}});
+    
+}    
+});
+
+Template.paymentOptions.helpers({
+userWeChat:function(){
+return Meteor.user().profile.wechat;    
+}
+    
+});
+
+Template.registrationEdit.helpers({
+   
+    runnerInformation: function(){
+     return Runners.findOne({_id:this._id});   
+        
+    },
+    registrationTotal:function(){
+     var thisRunner = Runners.findOne({_id:this._id})   
+     return 100 + parseFloat(thisRunner.runnerAdditionalDonation);   
+    }
+    
+});
+
+Template.registrationEdit.events({
+
+'click #updateRegistration':function(e){
+ e.preventDefault();
+  var registrationObject = {
+    runnerRaceSelected:$('#registrationEditFormContent').find('[name=runnerRaceSelected]').val(),
+    runnerFirstName: $('#registrationEditFormContent').find('[name=runnerGivenName]').val(),
+    runnerLastName: $('#registrationEditFormContent').find('[name=runnerFamilyName]').val(),
+    runnerAge: $('#registrationEditFormContent').find('[name=runnerAge]').val(),
+    runnerGender: $('#registrationEditFormContent').find('[name=runnerGender]').val(),
+    runnerPhone: $('#registrationEditFormContent').find('[name=runnerPhone]').val(),
+    runnerEmail: $('#registrationEditFormContent').find('[name=runnerEmail]').val(),
+    runnerEmergencyName: $('#registrationEditFormContent').find('[name=runnerEmergencyName]').val(),
+    runnerEmergencyPhone: $('#registrationEditFormContent').find('[name=runnerEmergencyPhone]').val(),
+    runnerEstimatedTime: $('#registrationEditFormContent').find('[name=runnerEstimatedTime]').val(),
+    runnerShirtSize: $('#registrationEditFormContent').find('[name=runnerShirtSize]').val()}
+    
+Runners.update({_id:this._id},{$set:registrationObject},function(error,result){
+        $('#updateRegistration').html('Submitting....');
+            
+        if(error==undefined){
+        
+        Router.go('/portal/');
+        
+        };  
+});
+    
+},
+'click #runnerEmailEdit':function(e){
+alert("This email is being used to group the registrations made by this user. If you would like to use a different email, please create a different account."); 
+    
+}    
+});
+
+Template.registrationEdit.rendered = function(){
+
+console.log(this);    $('#registrationEditFormContent').find('[name=runnerAge]').val(this.data.runnerAge);
+     $('#registrationEditFormContent').find('[name=runnerGender]').val(this.data.runnerGender);
+ 
+ $('#registrationEditFormContent').find('[name=runnerEstimatedTime]').val(this.data.runnerEstimatedTime);
+ $('#registrationEditFormContent').find('[name=runnerShirtSize]').val(this.data.runnerShirtSize);
+ $('#registrationEditFormContent').find('[name=runnerRaceSelected]').val(this.data.runnerRaceSelected);       
+}
+
+
 
 Template.confirmationPage.events({
     
     'click #registerAnother': function(){
         
      Session.set("selectedRace","");
+        
+    }
+    
+});
+
+Template.userPortal.events({
+   
+    'click #addRunnerRegistration':function(e){
+     
+    Router.go('/registration-temp/');    
         
     }
     
@@ -445,25 +634,93 @@ Template.paymentConfirmationFrontPage.helpers({
     
     
 retrievedRecords: function(){
- var currentCode = Session.get('currentPaymentRegistrationCode'); 
- var runnerRecord = Runners.find({runnerRegistrationCode:currentCode});
+ var currentSearch = Session.get('currentSearchObject');
+ if(currentSearch!=null){
+ var runnerRecord = Runners.find(currentSearch);
  //console.log(runnerRecord.runnerFirstName);
- return runnerRecord;   
+ return runnerRecord;}
+else{ return null;}
+   
+},
+runnerPaidStatus: function(){
     
-  
+if(this.runnerHasPaid){
+
+return "<span class = 'text-success'>Paid</span>" ;   
+    
 }
+else{
+
+return "<span class = 'text-danger'>Not Paid</span>";
     
+}
+},
+runnerFee: function(){
+return 100 + parseFloat(this.runnerAdditionalDonation);    
     
+},
+totalFee: function(){
+var searchObject = Session.get('currentSearchObject');
+if(searchObject){
+var runners = Runners.find(searchObject)
+var fee = 0;
+runners.forEach(function(r){
+fee += 100 + parseFloat(r.runnerAdditionalDonation);
 });
+return fee;
+}
+return null;
+},
+searchObject: function(){
+    
+return !(Session.equals('currentSearchObject',null));    
+},
+currentDate: function(){
+var now = new Date();
+return now.toLocaleDateString();
+    
+}
+});
+
+Template.paymentConfirmationFrontPage.rendered=function(){
+    
+   Session.set('currentSearchObject',null); 
+};
 
 Template.paymentConfirmationFrontPage.events({
    
-    'click #submitRegistrationCode': function(e){
+    'click #submitCodeSearch': function(e){
      
      e.preventDefault();
-     var currentCode = $('#paymentRegistrationCode').val();    
-     Session.set('currentPaymentRegistrationCode',currentCode);   
+     var currentCode = $('#paymentByCode').val();    
+var searchObject = {runnerRegistrationCode:currentCode};     Session.set('currentSearchObject',searchObject);   
+    $('#paymentByEmail').val('');
+    $('#paymentByWeChat').val('');
+    },
+    'click #submitEmailSearch': function(e){
      
+     e.preventDefault();
+     var currentEmail = $('#paymentByEmail').val();
+        
+        var searchObject = {runnerEmail:currentEmail};              Session.set('currentSearchObject',searchObject);   
+        $('#paymentByCode').val('');
+    $('#paymentByWeChat').val('');     
+    },
+    'click #submitWeChatSearch': function(e){
+     
+     e.preventDefault();
+     var WeChat = $('#paymentByWeChat').val();
+    var currUser = Meteor.users.findOne({"profile.wechat":WeChat});
+var searchObject = {runnerEmail:currUser.emails[0].address};    Session.set('currentSearchObject',searchObject);   
+    $('#paymentByEmail').val('');
+    $('#paymentByCode').val(''); 
+    },
+    'click .paidToggle':function(e){
+        
+     var newValue = !(this.runnerHasPaid);
+     var paidDate = $('#paymentDate').val();
+     Runners.update({_id:this._id},{$set:{runnerHasPaid:newValue,runnerPaidDate:paidDate}});
+        
     }
     
 });
@@ -580,7 +837,11 @@ Template.registrationSorted1K.helpers({
     
 });
 
-var getRegistrationInfo = function(){
+
+
+
+
+var getNewRegistrationInfo = function(){
     
     registrationObject = {
     
@@ -594,19 +855,24 @@ var getRegistrationInfo = function(){
     runnerEmergencyPhone: $('#registrationFormContent').find('[name=runnerEmergencyPhone]').val(),
     runnerEstimatedTime: $('#registrationFormContent').find('[name=runnerEstimatedTime]').val(),
     runnerShirtSize: $('#registrationFormContent').find('[name=runnerShirtSize]').val(),
-    runnerAdditionalDonation: $('#registrationFormContent').find('[name=runnerAdditionalDonation]').val(),
-    runnerHasPaid: 'false',
+    runnerAdditionalDonation: parseFloat($('#registrationFormContent').find('[name=runnerAdditionalDonation]').val()),
+    runnerHasPaid: false,
     runnerBibNumber: 0,
     runnerRaceSelected: Session.get("selectedRace"),
     runnerRegistrationCode: generateRaceCode(),
     runnerRegistrationDate: new Date(),
-    
+    year:2015
     
         
     };
+    if(Meteor.user().profile==null){
+    var userProfile = {
+    phone:registrationObject.runnerPhone, emergencyPhone:registrationObject.runnerEmergencyPhone,
+emergencyContact:registrationObject.runnerEmergencyName,
+    };
         
-    
-    
+    Meteor.users.update({_id:Meteor.user()._id},{$set:{profile:userProfile}});
+    }
     
     return registrationObject;
     

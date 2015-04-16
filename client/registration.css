@@ -1,13 +1,11 @@
 #registrationFormBackground{
    width:100%;
     padding:30px;
-    height:600px;
     margin-left:auto;
     margin-right:auto;
     margin-top:0px;
     float:none;
-    background-color:#EBA100;
-    opacity:0.5;
+    background-color:#FCDC3B;
     position: absolute;
     display:block;
     z-index:-1;
@@ -17,16 +15,32 @@
 
 #registrationFormContent{
  width:100%;
- font-weight:600;
+ 
  margin-top:20px;
  margin-left: 10px;
  margin-right:10px;
  padding:20px;
- height: 400px;
- display: block;
- position: relative;
  z-index:1;
+  
+}
+
+#registrationEditFormContent{
+ width:100%;
+ margin-top:20px;
+ margin-left: 10px;
+ margin-right:10px;
+ padding:20px;
+ z-index:1;
+ color:#FCDC3B;
+      
     
+    
+}
+
+.regName{
+    
+ width:50%;
+ margin:5px;
     
 }
 
@@ -128,13 +142,12 @@ width: 45%;
 
 #formShirtSize{
  
-    display:none;
+  
     
 }
 
 #shirtNotice{
-    
- display:none;   
+ 
 }
 
 #shirtSizeConfirmation{
@@ -210,11 +223,12 @@ select{
     
 }
 .raceSelect{
- width:100px;
+ width:150px;
  height:20px;
  border: solid 2px black;
  border-radius: 5px;
- 
+ font-size: 24px;
+ margin:10px;
     
     
 }
@@ -229,6 +243,8 @@ select{
  line-height:16px;   
     
 }
+
+
 #submitRegistration{
     
  background-color:#EBA100;
@@ -254,17 +270,31 @@ border-radius:5px;
     
 }
 
-#additionalDonation{
+#updateRegistration{
     
- width: 40%;
- border: white 3px solid;
- font-size:20px;
- background:none;
- color:#020A66;
-    
-    
+ background-color:#EBA100;
+ border: solid 2px #020A66;
+ font-size:30px;
+ height:60px;
+margin-left:auto;
+margin-right:auto;
+border-radius:5px;
+margin-top:30px;
     
 }
+#updateRegistration:hover{
+    
+ background-color:#020A66;
+ border: solid 2px #EBA100;
+ color: #EBA100;
+ font-size:30px;
+ height:60px;
+margin-left:auto;
+margin-right:auto;
+border-radius:5px;
+    
+}
+
 #additionalDonation:hover{
     border: #EBA100 3px solid;
     
@@ -346,5 +376,25 @@ margin:10px;
 display:flex
     float:none;
     
+    
+}
+
+#cameraScan{
+    
+ width:400px;   
+}
+
+.portalButton{
+font-size:18px;
+height:30px;
+margin-left:auto;
+margin-right:auto;
+border-radius:5px;
+padding:5px;
+}
+
+#at-btn{
+ 
+height:40px;
     
 }

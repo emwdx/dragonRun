@@ -274,24 +274,14 @@ border-radius:5px;
     
  background-color:#EBA100;
  border: solid 2px #020A66;
- font-size:30px;
- height:60px;
-margin-left:auto;
-margin-right:auto;
-border-radius:5px;
-margin-top:30px;
-    
+ color:#020A66;    
 }
 #updateRegistration:hover{
     
  background-color:#020A66;
  border: solid 2px #EBA100;
  color: #EBA100;
- font-size:30px;
- height:60px;
-margin-left:auto;
-margin-right:auto;
-border-radius:5px;
+ 
     
 }
 
@@ -391,6 +381,7 @@ margin-left:auto;
 margin-right:auto;
 border-radius:5px;
 padding:5px;
+background-color:#11CC11;
 }
 
 #at-btn{

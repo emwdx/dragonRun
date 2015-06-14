@@ -40,12 +40,12 @@ localstorage@1.0.3
 logging@1.0.7
 meteor@1.1.6
 meteor-platform@1.2.2
+meteorhacks:ssr@2.1.2
 minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
 mongo@1.1.0
 mrt:accounts-admin-ui-bootstrap-3@0.2.7
-mrt:qr-scanner@0.2.0
 npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
 ordered-dict@1.0.3
@@ -63,7 +63,6 @@ spacebars@1.0.6
 spacebars-compiler@1.0.6
 srp@1.0.3
 standard-app-packages@1.0.5
-steeve:jquery-qrcode@0.2.2
 templating@1.1.1
 timesync@0.0.0
 tracker@1.0.7

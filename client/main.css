@@ -102,14 +102,26 @@ td{
 
 #registrationList{
      
- background-color:white;
+ background-color:gray;
  
  margin: 5px;
  padding:10px;
+     
+}
+
+#paymentList{
+     
+ background-color:gray;
+ 
+ margin: 5px;
+ padding:10px;
+     
+}
+
+#sponsor-image{
     
-    
-       
-    
+ margin-left:auto;
+ margin-right:auto;
     
 }
 
@@ -130,27 +142,22 @@ text-align: center;
 .btn{
     
  background-color:#FCDC3B;
- border: solid 2px #003f87;
- font-size:18px;
- height:30px;
-margin-left:auto;
-margin-right:auto;
-border-radius:5px;
-margin-top:30px;
+      
+}
+
+#sign-out{
+    
+ margin-bottom:0px;   
     
 }
+
 .btn:hover{
     
  background-color:#003f87;
- border: solid 2px #FCDC3B;
  color: #FCDC3B;
- font-size:18px;
- height:30px;
-margin-left:auto;
-margin-right:auto;
-border-radius:5px;
-    
+  
 }
+
 #confirmStartRace{
 width:200px;    
     
@@ -179,9 +186,9 @@ padding:20px;
 #officialRaceTime{
  background:#FCDC3B;
  color: #003f87;
- margin-top:-120px;
+ margin-top:120px;
  font-size:50px;
- 
+ z-index:10;
 }
 #officialRaceTimeBlock{
    

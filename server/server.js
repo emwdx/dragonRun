@@ -27,24 +27,64 @@ if(!Meteor.roles.findOne({name: "race-runner"}))
   });
 
 
-Meteor.publish('runners', function(publishLimit,options) { 
-    
+Meteor.publish('runners', function(publishLimit,options) {
+    if(this.userId){
+    var currentUser = Meteor.users.findOne({_id:this.userId});
+    if(Roles.userIsInRole(this.userId,['staff','admin'])){
     return Runners.find({year:2015},options);
+    }
+    else{
+        return Runners.find({year:2015,registrationEmail:currentUser.emails[0].address},options);
+        
     
+    }
+    }
+    return null;
 });
 
  Meteor.publish('systemVariables',function(){
      
   return systemVariables.find();   
      
- });   
+ });  
+
+Meteor.publish('payments',function(){
+if(this.userId){
+    var currentUser = Meteor.users.findOne({_id:this.userId});
+    if(Roles.userIsInRole(this.userId,['staff','admin'])){
+    return Payments.find({year:2015});
+    }
     
+    }
+return null;   
+    
+    
+});
+
+Meteor.publish('users',function(){
+if(this.userId){
+    var currentUser = Meteor.users.findOne({_id:this.userId});
+    if(Roles.userIsInRole(this.userId,['staff','admin','wechat'])){
+    return Meteor.users.find();
+    }
+    
+    }
+return null;   
+    
+    
+});
+
+
  Meteor.publish('racerunners',function(){
      
   return RaceRunners.find();   
      
  });  
+ 
+
+
 Meteor.methods({
+ /*    
   sendEmail: function (to, from, subject, text) {
     check([to, from, subject, text], [String]);
 
@@ -59,7 +99,8 @@ Meteor.methods({
       text: text
     });
   },
-    
+  */
+ 
   startRace: function(){
       this.unblock();
       var startTimeObject = {name:"raceStartTime",value:new Date().getTime()};
@@ -75,7 +116,22 @@ Meteor.methods({
       systemVariables.update({name:"raceHasStarted"},{$set:raceHasStoppedObject});
       
       
+  },
+    
+ sendPaymentEmail: function(registrationEmail){
+  this.unblock();
+  if(Roles.userIsInRole(this.userId,['admin','staff'])){
+  var html = SSR.render("mustPayTXT");
+  Email.send({
+      to: registrationEmail,
+      from: '2015dragonsquad@SCISHIS.onmicrosoft.com',
+      subject: '2015 Dragon Run/Fun Run Registration',
+      text: html
+    }); 
+     
   }
+     
+ }
 });
 
 Runners.allow({
@@ -96,24 +152,67 @@ Runners.allow({
   }
 });
 
-RaceRunners.allow({
- update: function(){
+Runners.deny({
+    update: function(userId, post, fieldNames) {
+    // may only edit the following two fields:
+ if(_.contains(fieldNames, 'runnerHasPaid')){
+     
+  if(Roles.userIsInRole(userId,['staff','admin'])){
+      console.log('isAdmin');
+      return false;
       
-  return true;      
-      
-  },
-  remove: function(){
-  
-  return true;
-      
-  },
-  insert: function(){
+  }
+  else{
+      return true;
+  }
+ }
+ else{return false}
    
-    return true;  
-      
-  }    
+    }
     
 });
+
+Payments.allow({
+update: function(userId, doc, fieldNames, modifier){
+     
+  return Roles.userIsInRole(userId,['staff','admin']);      
+      
+  },
+  remove: function(userId, doc){
+  
+  return Roles.userIsInRole(userId,['staff','admin']);
+      
+  },
+  insert: function(userId, doc){
+   
+    return Roles.userIsInRole(userId,['staff','admin']);  
+      
+  }    
+        
+    
+    
+});
+
+RaceRunners.allow({
+update: function(userId, doc, fieldNames, modifier){
+     
+  return Roles.userIsInRole(userId,['staff','admin']);      
+      
+  },
+  remove: function(userId, doc){
+  
+  return Roles.userIsInRole(userId,['staff','admin']);
+      
+  },
+  insert: function(userId, doc){
+   
+    return Roles.userIsInRole(userId,['staff','admin']);  
+      
+  }    
+        
+      
+});
+
 systemVariables.allow({
  update: function(){
       
@@ -138,3 +237,7 @@ Accounts.onCreateUser(function(options,user){
 user.roles = ['race-runner'];    
 return user;    
 });
+
+SSR.compileTemplate('mustPayTXT', Assets.getText('email.html'));
+
+

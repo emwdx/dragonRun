@@ -23,7 +23,8 @@ Meteor.setInterval(function () {
 Meteor.subscribe("systemVariables");
 Meteor.subscribe("racerunners");    
 Meteor.subscribe("runners",{},{});
-
+Meteor.subscribe("payments");
+Meteor.subscribe("users");
 
 Template.registerHelper('isAdminUser',function(){
 
@@ -90,7 +91,7 @@ Template.raceConfiguration.events({
     
     });
         
- var allRunners = Runners.find({runnerHasPaid:'true',runnerRaceSelected:"5K Dragon Run"});
+ var allRunners = Runners.find({runnerHasPaid:true,runnerRaceSelected:"5K Dragon Run"});
  
  allRunners.forEach(function(runner){
  
@@ -269,7 +270,7 @@ stoppedRunners: function(){
 runnerStopTimeString: stopTimeString,
 });
 Template.emergencyContactList.helpers({
-runners: function(){return Runners.find({runnerHasPaid:"true"},{sort:{runnerBibNumber:1}})} 
+runners: function(){return Runners.find({runnerHasPaid:true},{sort:{runnerBibNumber:1}})} 
 });
       
 Template.officialRaceTime.helpers({
@@ -635,4 +636,6 @@ return minuteString+":"+secondString;
  
         
     
-}
+}  
+    
+
